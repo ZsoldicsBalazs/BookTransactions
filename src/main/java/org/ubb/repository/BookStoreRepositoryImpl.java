@@ -8,10 +8,10 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class BookStoreRepositoryImpl< Integer ,Entity extends BaseEntity<Integer>> implements Repository<Integer,Entity>{
+public class BookStoreRepositoryImpl<ID,Entity extends BaseEntity<ID>> implements Repository<ID,Entity>{
 
 
-    private Map<Integer, Entity> entities;
+    private Map<ID, Entity> entities;
     private Validator<Entity> validator;
 
     public BookStoreRepositoryImpl(Validator<Entity> validator) {
@@ -19,7 +19,7 @@ public class BookStoreRepositoryImpl< Integer ,Entity extends BaseEntity<Integer
     }
 
     @Override
-    public Optional<Entity> findOne(Integer id) {
+    public Optional<Entity> findOne(ID id) {
        if(id == null){
            throw new IllegalArgumentException("id must not be null !");
        }
@@ -43,7 +43,7 @@ public class BookStoreRepositoryImpl< Integer ,Entity extends BaseEntity<Integer
     }
 
     @Override
-    public Optional<Entity> delete(Integer id) {
+    public Optional<Entity> delete(ID id) {
         if(id == null){
             throw new IllegalArgumentException("id must not be null !");
         }

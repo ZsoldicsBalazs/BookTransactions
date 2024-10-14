@@ -1,16 +1,16 @@
 package org.ubb.service;
 
 import org.ubb.domain.Client;
-import org.ubb.repository.BookStoreRepository;
+import org.ubb.repository.Repository;
 
 import java.util.List;
 
 public class ClientService {
 
-    private final BookStoreRepository<Client> clientBookStoreRepository;
+    private final Repository<Integer, Client> clientBookStoreRepository;
 
 
-    public ClientService(BookStoreRepository<Client> clientBookStoreRepository) {
+    public ClientService(Repository<Integer, Client> clientBookStoreRepository) {
         this.clientBookStoreRepository = clientBookStoreRepository;
     }
 

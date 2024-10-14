@@ -3,7 +3,7 @@ package org.ubb.service;
 import org.ubb.domain.Book;
 import org.ubb.domain.Client;
 import org.ubb.domain.Transaction;
-import org.ubb.repository.BookStoreRepository;
+import org.ubb.repository.Repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,9 +11,9 @@ import java.util.stream.Collectors;
 
 public class TransactionService {
 
-    private final BookStoreRepository<Transaction> transactionRepository;
+    private final Repository<Integer, Transaction> transactionRepository;
 
-    public TransactionService(BookStoreRepository<Transaction> transactionRepository) {
+    public TransactionService(Repository<Integer, Transaction> transactionRepository) {
         this.transactionRepository = transactionRepository;
     }
 
