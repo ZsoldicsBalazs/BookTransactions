@@ -3,16 +3,15 @@ package org.ubb.domain;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Transaction extends BaseEntity{
+public class Transaction extends BaseEntity<Integer>{
 
     private int id;
-    private static AtomicInteger uniqueId = new AtomicInteger();
     private List<Book> soldBooks;
     private Client client;
     private double totalAmount;
 
-    public Transaction(List<Book> books, Client client) {
-        id = uniqueId.getAndIncrement();
+    public Transaction(int id ,List<Book> books, Client client) {
+        super.setId(id);
         soldBooks = books;
         this.client = client;
         calculateTotalAmount();

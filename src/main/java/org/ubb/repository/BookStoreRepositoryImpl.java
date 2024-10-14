@@ -1,52 +1,61 @@
 package org.ubb.repository;
 
 import org.ubb.domain.BaseEntity;
-import java.util.ArrayList;
-import java.util.List;
+import org.ubb.domain.validators.Validator;
+import org.ubb.domain.validators.ValidatorException;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-public class BookStoreRepositoryImpl<Entity extends BaseEntity> implements BookStoreRepository<Entity>{
-
-    private List<Entity> entityList;
+public class BookStoreRepositoryImpl< Integer ,Entity extends BaseEntity<Integer>> implements Repository<Integer,Entity>{
 
 
-    // the constructor initializing the list
-    public BookStoreRepositoryImpl() {
-        entityList = new ArrayList<>();
+    private Map<Integer, Entity> entities;
+    private Validator<Entity> validator;
+
+    public BookStoreRepositoryImpl(Validator<Entity> validator) {
+        this.validator = validator;
     }
 
     @Override
-    public List<Entity> findAll() {
-        return entityList;
+    public Optional<Entity> findOne(Integer id) {
+       if(id == null){
+           throw new IllegalArgumentException("id must not be null !");
+       }
+       return Optional.ofNullable(entities.get(id));
+
     }
 
     @Override
-    public Optional<Entity> findById(int id) {
-        return entityList.stream()
-                .filter(entity -> entity.getId() == id)
-                .findFirst();
+    public Iterable<Entity> findAll() {
+        Set<Entity> allEntities = entities.entrySet().stream().map(Map.Entry::getValue).collect(Collectors.toSet());
+        return allEntities;
     }
 
     @Override
-    public Entity save(Entity entity) {
-        entityList.add(entity);
-        return entity;
-    }
-
-    @Override
-    public boolean deleteById(int id) {
-        entityList.removeIf(entity -> entity.getId() == id);
-        return false;
-    }
-
-    @Override
-    public boolean update (Entity entity) {
-        int index = entityList.indexOf(entity);
-        if (index == -1){
-            return false;
+    public Optional<Entity> save(Entity entity) throws ValidatorException {
+        if(entity == null){
+            throw new IllegalArgumentException("entity must not be null !");
         }
-        entityList.set(index, entity);
-        return true;
+        validator.validate(entity);
+        return Optional.ofNullable(entities.putIfAbsent(entity.getId(), entity));
     }
 
+    @Override
+    public Optional<Entity> delete(Integer id) {
+        if(id == null){
+            throw new IllegalArgumentException("id must not be null !");
+        }
+        return Optional.ofNullable(entities.remove(id));
+    }
+
+    @Override
+    public Optional<Entity> update(Entity entity) throws ValidatorException {
+        if(entity == null){
+            throw new IllegalArgumentException("entity must not be null !");
+        }
+        validator.validate(entity);
+        return Optional.ofNullable(entities.replace(entity.getId(), entity));
+    }
 }
