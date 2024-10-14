@@ -4,6 +4,11 @@ import org.ubb.domain.Client;
 import org.ubb.repository.Repository;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class ClientService {
 
@@ -14,11 +19,12 @@ public class ClientService {
         this.clientBookStoreRepository = clientBookStoreRepository;
     }
 
-    public Client addClient(Client client) {
+    public Optional<Client> addClient(Client client) {
         return clientBookStoreRepository.save(client);
     }
 
     public List<Client> getAll() {
-        return this.clientBookStoreRepository.findAll();
+        return StreamSupport.stream(clientBookStoreRepository.findAll().spliterator(), false)
+                .collect(Collectors.toList());
     }
 }
