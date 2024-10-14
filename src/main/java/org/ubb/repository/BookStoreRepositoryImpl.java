@@ -4,10 +4,7 @@ import org.ubb.domain.BaseEntity;
 import org.ubb.domain.validators.Validator;
 import org.ubb.domain.validators.ValidatorException;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class BookStoreRepositoryImpl<ID,Entity extends BaseEntity<ID>> implements Repository<ID,Entity>{
@@ -32,7 +29,7 @@ public class BookStoreRepositoryImpl<ID,Entity extends BaseEntity<ID>> implement
 
     @Override
     public Iterable<Entity> findAll() {
-        Set<Entity> allEntities = entities.entrySet().stream().map(Map.Entry::getValue).collect(Collectors.toSet());
+        List<Entity> allEntities = entities.entrySet().stream().map(Map.Entry::getValue).collect(Collectors.toList());
         return allEntities;
     }
 
