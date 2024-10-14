@@ -3,7 +3,7 @@ package org.ubb.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Client extends BaseEntity {
+public class Client extends BaseEntity<Integer> {
 
     private String firstName;
     private String lastName;
@@ -13,7 +13,7 @@ public class Client extends BaseEntity {
     private List<Book> books;
 
     public Client(int id, String firstName, String lastName, int age, String address, String email) {
-        super(id);
+        super.setId(id);
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
@@ -68,7 +68,6 @@ public class Client extends BaseEntity {
 
     public void buyBook(Book book) {
         books.add(book);
-//        book.incrementareVanzari();       TODO: de implementat metoda la book, sa se vada cate s-au vandut
     }
     public int getTotalBooks(){
         return books.size();
