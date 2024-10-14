@@ -1,17 +1,11 @@
 package org.ubb.domain;
 
-public class BaseEntity {
-    private int id;
+public abstract class BaseEntity<ID> {
+    private ID id;
 
-    public BaseEntity() {
-    }
+    public ID getId() {return id;}
 
-    public BaseEntity(int id) {
-        this.id = id;
-    }
-    public int getId() {return id;}
-
-    public void setId(int id) {this.id = id;}
+    public void setId(ID id) {this.id = id;}
 
     @Override
     public String toString() {

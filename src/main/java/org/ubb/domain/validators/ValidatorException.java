@@ -1,4 +1,4 @@
-package ro.ubb.catalog.domain.validators;
+package org.ubb.domain.validators;
 
 /**
  * @author radu.
