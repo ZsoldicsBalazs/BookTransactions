@@ -24,24 +24,26 @@ public class TransactionService {
     }
 
     public Optional<Transaction> findTransactionById(int id) {
-        return transactionRepository.findById(id);
-    }
-    public List<Transaction> findTransactionByClient(Client client) {
-        return transactionRepository.findAll().stream()
-                .filter(transaction -> transaction.getClient().equals(client))
-                .collect(Collectors.toList());
-    }
-    public List<Transaction> findTransactionByBook(Book searchedBook) {
-        return transactionRepository.findAll().stream()
-                .filter(book -> book.getClient().equals(searchedBook))
-                .collect(Collectors.toList());
+        return transactionRepository.findOne(id);
     }
 
-    public boolean updatetrasnaction(Transaction newTransaction) {
-        return transactionRepository.update(newTransaction);
-    }
 
-    public boolean deleteTransaction(Transaction transaction) {
-        return transactionRepository.deleteById(transaction.getId());
+//    public List<Transaction> findTransactionByClient(Client client) {
+//        return transactionRepository.findAll().stream()
+//                .filter(transaction -> transaction.getClient().equals(client))
+//                .collect(Collectors.toList());
+//    }
+//    public List<Transaction> findTransactionByBook(Book searchedBook) {
+//        return transactionRepository.findAll().stream()
+//                .filter(book -> book.getClient().equals(searchedBook))
+//                .collect(Collectors.toList());
+//    }
+
+//    public boolean updatetrasnaction(Transaction newTransaction) {
+//        return transactionRepository.update(newTransaction);
+//    }
+
+    public Optional<Transaction> deleteTransaction(Transaction transaction) {
+        return transactionRepository.delete(transaction.getId());
     }
 }
