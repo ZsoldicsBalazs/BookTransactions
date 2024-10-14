@@ -3,6 +3,8 @@ package org.ubb.repository;
 import org.ubb.domain.BaseEntity;
 import org.ubb.domain.validators.Validator;
 import org.ubb.domain.validators.ValidatorException;
+
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -16,6 +18,7 @@ public class BookStoreRepositoryImpl<ID,Entity extends BaseEntity<ID>> implement
 
     public BookStoreRepositoryImpl(Validator<Entity> validator) {
         this.validator = validator;
+        entities = new HashMap<>();
     }
 
     @Override
