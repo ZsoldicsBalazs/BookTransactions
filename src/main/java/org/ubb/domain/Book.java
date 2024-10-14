@@ -1,22 +1,17 @@
 package org.ubb.domain;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
-public class Book extends BaseEntity {
+public class Book extends BaseEntity<Integer> {
    private String title;
    private List<String> author;
-
-
-  // private String author;
    private String  publisher;
    private int year;
    private double price;
 
-
-   private List<Book> books;
-
-    public Book( int id, String title, List<String> author, String publisher, int year, float price) {
-        super(id);
+    public Book(int id,String title, List<String> author, String publisher, int year, double price) {
+        super.setId(id);
         this.title = title;
         this.author = author;
         this.publisher = publisher;
@@ -64,13 +59,6 @@ public class Book extends BaseEntity {
         this.price = price;
     }
 
-    public List<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(List<Book> books) {
-        this.books = books;
-    }
 
     @Override
     public String toString() {
@@ -81,7 +69,6 @@ public class Book extends BaseEntity {
                 ", publisher='" + publisher + '\'' +
                 ", year=" + year +
                 ", price=" + price +
-                ", books=" + books +
                 '}';
     }
 }

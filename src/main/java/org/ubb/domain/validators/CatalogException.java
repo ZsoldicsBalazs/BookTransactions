@@ -1,8 +1,5 @@
-package ro.ubb.catalog.domain.validators;
+package org.ubb.domain.validators;
 
-/**
- * Created by radu.
- */
 public class CatalogException extends RuntimeException{
 
     public CatalogException(String message) {

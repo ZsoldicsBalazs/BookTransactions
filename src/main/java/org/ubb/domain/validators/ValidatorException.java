@@ -1,8 +1,5 @@
-package ro.ubb.catalog.domain.validators;
+package org.ubb.domain.validators;
 
-/**
- * @author radu.
- */
 
 public class ValidatorException extends CatalogException {
     public ValidatorException(String message) {

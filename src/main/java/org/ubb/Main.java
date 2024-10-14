@@ -1,10 +1,15 @@
 package org.ubb;
 
 import org.ubb.controller.BookStoreController;
+import org.ubb.domain.Book;
 import org.ubb.domain.Client;
 import org.ubb.domain.Transaction;
-import org.ubb.repository.BookStoreRepository;
+import org.ubb.domain.validators.BookValidatorImpl;
+import org.ubb.domain.validators.ClientValidatorImpl;
+import org.ubb.domain.validators.TranasactionValidatorImpl;
+import org.ubb.domain.validators.Validator;
 import org.ubb.repository.BookStoreRepositoryImpl;
+import org.ubb.repository.Repository;
 import org.ubb.service.ClientService;
 import org.ubb.service.TransactionService;
 import org.ubb.view.BookStoreView;
@@ -14,9 +19,16 @@ public class Main {
     public static void main(String[] args) {
 
         BookStoreView bookStoreView = new BookStoreView();
-        BookStoreRepository<Transaction> transactionRepository = new BookStoreRepositoryImpl<>();
+
+        Validator<Book> bookValidator = new BookValidatorImpl();
+        Validator<Client> clientValidator = new ClientValidatorImpl();
+        Validator<Transaction> transactionValidator = new TranasactionValidatorImpl();
+
+        Repository<Integer, Transaction> transactionRepository = new BookStoreRepositoryImpl<>(transactionValidator);
+
         TransactionService transactionService = new TransactionService(transactionRepository);
-        BookStoreRepository<Client> clientRepository = new BookStoreRepositoryImpl<>();
+        Repository<Integer, Client> clientRepository = new BookStoreRepositoryImpl<>(clientValidator);
+
         ClientService clientService = new ClientService(clientRepository);
         BookStoreController bookStoreController = new BookStoreController(transactionService, bookStoreView, clientService);
         ViewMenuItems selectedItem = ViewMenuItems.FILTER_TRANSACTIONS;
