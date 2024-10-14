@@ -9,6 +9,7 @@ import org.ubb.domain.validators.ClientValidatorImpl;
 import org.ubb.domain.validators.TranasactionValidatorImpl;
 import org.ubb.domain.validators.Validator;
 import org.ubb.repository.BookStoreRepositoryImpl;
+import org.ubb.repository.ClientFileRepository;
 import org.ubb.repository.Repository;
 import org.ubb.service.ClientService;
 import org.ubb.service.TransactionService;
@@ -25,11 +26,11 @@ public class Main {
         Validator<Transaction> transactionValidator = new TranasactionValidatorImpl();
 
         Repository<Integer, Transaction> transactionRepository = new BookStoreRepositoryImpl<>(transactionValidator);
-
         TransactionService transactionService = new TransactionService(transactionRepository);
-        Repository<Integer, Client> clientRepository = new BookStoreRepositoryImpl<>(clientValidator);
 
+        Repository<Integer, Client> clientRepository = new ClientFileRepository(clientValidator, "C:\\Users\\CSI\\IdeaProjects\\bookStore\\BookStore\\data\\clients");
         ClientService clientService = new ClientService(clientRepository);
+
         BookStoreController bookStoreController = new BookStoreController(transactionService, bookStoreView, clientService);
         ViewMenuItems selectedItem = ViewMenuItems.FILTER_TRANSACTIONS;
 

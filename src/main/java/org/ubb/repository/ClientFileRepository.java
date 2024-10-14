@@ -11,8 +11,8 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
-import static java.lang.StringTemplate.STR;
 
 public class ClientFileRepository extends BookStoreRepositoryImpl<Integer, Client> {
 
@@ -43,13 +43,10 @@ public class ClientFileRepository extends BookStoreRepositoryImpl<Integer, Clien
 
 
 
-
-
-
     private void readFile() {
-        try {
-            Path path = Path.of(fileName);
-            Files.lines(path)
+        Path path = Path.of(fileName);
+        try (Stream<String> fileLinesStream = Files.lines(path)) {
+            fileLinesStream
                     .forEach(line -> {
                         List<String> lineData = List.of(line.split(";"));
                         int id = Integer.parseInt(lineData.get(0));
@@ -70,11 +67,13 @@ public class ClientFileRepository extends BookStoreRepositoryImpl<Integer, Clien
     private void saveToFile (Client client) {
         Path path = Path.of(fileName);
 
-        try {
-            BufferedWriter bufferedWriter = Files.newBufferedWriter(path, StandardOpenOption.APPEND);
+        try (BufferedWriter bufferedWriter = Files.newBufferedWriter(path, StandardOpenOption.APPEND)){
+
             String clientString =
-                    STR."\{client.getId()};\{client.getFirstName()};\{client.getLastName()};\{client.getAge()};\{client.getAddress()};\{client.getEmail()}";
+                    client.getId() +";" + client.getFirstName() +";" + client.getLastName() + ";" + client.getAge() + ";" + client.getAddress() + ";" + client.getEmail();
+            bufferedWriter.newLine();
             bufferedWriter.write(clientString);
+            bufferedWriter.newLine();
 
         } catch (IOException e) {
             throw new RuntimeException(e);
