@@ -17,6 +17,7 @@ import org.ubb.view.BookStoreView;
 import org.ubb.view.ViewMenuItems;
 
 public class Main {
+
     public static void main(String[] args) {
 
         BookStoreView bookStoreView = new BookStoreView();
