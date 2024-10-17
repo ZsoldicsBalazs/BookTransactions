@@ -8,8 +8,6 @@ public class BookValidatorImpl implements Validator<Book> {
 
     @Override
     public void validate(Book book) throws ValidatorException {
-        // TODO creat a validator for books
-        // int id,String title, List<String> author, String publisher, int year, double price
         isTitleValid(book);
         isAuthorValid(book);
         isYearValid(book);
