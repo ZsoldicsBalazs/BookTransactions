@@ -32,7 +32,9 @@ public class Main {
         Repository<Integer, Client> clientRepository = new ClientFileRepository(clientValidator, "C:\\Users\\CSI\\IdeaProjects\\bookStore\\BookStore\\data\\clients");
         ClientService clientService = new ClientService(clientRepository);
 
-        BookStoreController bookStoreController = new BookStoreController(transactionService, bookStoreView, clientService);
+        BookStoreController bookStoreController =
+                new BookStoreController(transactionService, bookStoreView, clientService);
+
         ViewMenuItems selectedItem = ViewMenuItems.FILTER_TRANSACTIONS;
 
 
