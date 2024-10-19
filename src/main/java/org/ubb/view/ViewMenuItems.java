@@ -9,7 +9,9 @@ public enum ViewMenuItems {
     SEE_ALL_TRANSACTIONS("3. Show all transactions"),
     FILTER_TRANSACTIONS("4. Show transactions by criteria"),
     DELETE_TRANSACTION("5. Delete an existing transaction"),
-    EXIT("6. Exit");
+    ADD_BOOK("6. Add a new book"),
+    SEE_ALL_BOOKS("7. Show all books"),
+    EXIT("8. Exit");
     private final String label;
 
     private ViewMenuItems(String shownName) {

@@ -1,5 +1,6 @@
 package org.ubb.view;
 
+import org.ubb.domain.Book;
 import org.ubb.domain.Client;
 import org.ubb.domain.Transaction;
 
@@ -57,5 +58,27 @@ public class BookStoreView {
 
     public void showClients(List<Client> clientList) {
         clientList.stream().forEach( client -> System.out.println(client.toString()));
+    }
+
+    public Book readBook(){
+        //    int id,String title, List<String> author, String publisher, int year, double price
+        System.out.println("ID:");
+        int id = scanner.nextInt();
+        System.out.println("Title: ");
+        String title = scanner.next();
+        System.out.println("Author: ");
+        String author = scanner.next();
+        System.out.println("Publisher");
+        String publisher = scanner.next();
+        System.out.println("Year: ");
+        int year = scanner.nextInt();
+        System.out.println("Price: ");
+        double price = scanner.nextDouble();
+        Book book = new Book(id,title,List.of(author),publisher,year,price);
+        return book;
+
+    }
+    public void showBooks(List<Book> bookList){
+        bookList.stream().forEach(book -> System.out.println(book.toString()));
     }
 }
