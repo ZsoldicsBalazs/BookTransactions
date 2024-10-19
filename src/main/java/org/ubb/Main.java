@@ -30,13 +30,13 @@ public class Main {
         Validator<Transaction> transactionValidator = new TranasactionValidatorImpl();
 
 
-        Repository<Integer, Book> bookRepository = new BookFileRepository(bookValidator,"src\\main\\java\\org\\ubb\\dataFiles\\books.txt");
+        Repository<Integer, Book> bookRepository = new BookFileRepository(bookValidator,"\\dataFiles\\books.txt");
         BookService bookService = new BookService(bookRepository);
 
         Repository<Integer,Transaction> transactionRepository = new BookStoreRepositoryImpl<>(transactionValidator);
         TransactionService transactionService = new TransactionService(transactionRepository);
 
-        Repository<Integer, Client> clientRepository = new ClientFileRepository(clientValidator, "src\\main\\java\\org\\ubb\\dataFiles\\clients.txt");
+        Repository<Integer, Client> clientRepository = new ClientFileRepository(clientValidator, "\\dataFiles\\clients.txt");
         ClientService clientService = new ClientService(clientRepository);
 
 
