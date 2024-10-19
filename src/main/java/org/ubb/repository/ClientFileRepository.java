@@ -50,6 +50,9 @@ public class ClientFileRepository extends BookStoreRepositoryImpl<Integer, Clien
         try (Stream<String> fileLinesStream = Files.lines(path)) {
             fileLinesStream
                     .forEach(line -> {
+                        if (line.isEmpty()) {
+                            return;
+                        }
                         List<String> lineData = List.of(line.split(";"));
                         int id = Integer.parseInt(lineData.get(0));
                         String firstName = lineData.get(1);
@@ -75,7 +78,6 @@ public class ClientFileRepository extends BookStoreRepositoryImpl<Integer, Clien
                     client.getId() +";" + client.getFirstName() +";" + client.getLastName() + ";" + client.getAge() + ";" + client.getAddress() + ";" + client.getEmail();
             bufferedWriter.newLine();
             bufferedWriter.write(clientString);
-            bufferedWriter.newLine();
 
         } catch (IOException e) {
             throw new RuntimeException(e);
