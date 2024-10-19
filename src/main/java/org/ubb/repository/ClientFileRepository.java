@@ -16,6 +16,7 @@ import java.util.stream.Stream;
 
 public class ClientFileRepository extends BookStoreRepositoryImpl<Integer, Client> {
 
+
     private String fileName;
     public ClientFileRepository(Validator<Client> validator, String filePath) {
         super(validator);
@@ -26,11 +27,12 @@ public class ClientFileRepository extends BookStoreRepositoryImpl<Integer, Clien
 
     @Override
     public Optional<Client> save(Client client) {
+        Optional<Client> optionalClinet = super.save(client);
         if (client == null) {
             throw new RuntimeException("The given client is empty");
         }
         saveToFile(client);
-        return super.save(client);
+        return optionalClinet;
     }
 
 //    Optional<Client> delete(Integer id) {
