@@ -31,15 +31,16 @@ public class BookFileRepository extends BookStoreRepositoryImpl<Integer, Book>{
 
         try{
             Files.lines(path).forEach(line -> {
-                Pattern pattern = Pattern.compile(",(?=(?:[^\\[]*\\[[^\\]]*\\])*[^\\[]*$)");
+                Pattern pattern = Pattern.compile(",");
                 List<String> items = List.of(pattern.split(line));
                 Pattern authorsPattern = Pattern.compile("\\[(.*?)\\]");
-                Matcher matcher = authorsPattern.matcher(items.get(1));
+                Matcher matcher = authorsPattern.matcher(items.get(2));
                 List<String> authorList = null;
                 if (matcher.find()) {
                     String authors = matcher.group(1);
-                    authorList = Arrays.asList(authors.split(","));
+                    authorList = Arrays.asList(authors.split(";"));
                 }
+
                 Integer id = Integer.parseInt(items.get(0));
                 String title = items.get(1);
                 String publisher = items.get(3);

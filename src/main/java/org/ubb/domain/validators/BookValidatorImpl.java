@@ -8,6 +8,7 @@ public class BookValidatorImpl implements Validator<Book> {
 
     @Override
     public void validate(Book book) throws ValidatorException {
+
         isTitleValid(book);
         isAuthorValid(book);
         isYearValid(book);

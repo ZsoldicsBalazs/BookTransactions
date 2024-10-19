@@ -1,5 +1,6 @@
 package org.ubb.controller;
 
+import org.ubb.domain.Book;
 import org.ubb.domain.Client;
 import org.ubb.domain.Transaction;
 import org.ubb.service.BookService;
@@ -40,6 +41,12 @@ public class BookStoreController {
                 Client client = view.readClient();
                 clientService.addClient(client);
                 break;
+            case ViewMenuItems.ADD_BOOK:
+                Book book = view.readBook();
+                bookService.addBook(book);
+                break;
+            case ViewMenuItems.SEE_ALL_BOOKS:
+                view.showBooks(bookService.getAllBooks());
 
         }
     }
