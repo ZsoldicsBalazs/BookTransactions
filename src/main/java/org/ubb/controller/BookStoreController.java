@@ -3,6 +3,7 @@ package org.ubb.controller;
 import org.ubb.domain.Book;
 import org.ubb.domain.Client;
 import org.ubb.domain.Transaction;
+import org.ubb.domain.validators.ValidatorException;
 import org.ubb.service.BookService;
 import org.ubb.service.ClientService;
 import org.ubb.service.TransactionService;
@@ -26,28 +27,32 @@ public class BookStoreController {
     }
 
     public void selectedOption(ViewMenuItems selectedItem) {
-        switch (selectedItem) {
-            case ViewMenuItems.SELL_BOOKS:
-                Transaction transaction = view.readTransaction();
-                //view.showTransaction(transactionService.createTransaction(transaction));
-                break;
-            case ViewMenuItems.SEE_ALL_TRANSACTIONS:
-                break;
-            case ViewMenuItems.READ_CLIENT:
-                List<Client> clientList = clientService.getAll();
-                view.showClients(clientList);
-                break;
-            case ViewMenuItems.ADD_CLIENT:
-                Client client = view.readClient();
-                clientService.addClient(client);
-                break;
-            case ViewMenuItems.ADD_BOOK:
-                Book book = view.readBook();
-                bookService.addBook(book);
-                break;
-            case ViewMenuItems.SEE_ALL_BOOKS:
-                view.showBooks(bookService.getAllBooks());
+        try {
+            switch (selectedItem) {
+                case ViewMenuItems.SELL_BOOKS:
+                    Transaction transaction = view.readTransaction();
+                    //view.showTransaction(transactionService.createTransaction(transaction));
+                    break;
+                case ViewMenuItems.SEE_ALL_TRANSACTIONS:
+                    break;
+                case ViewMenuItems.READ_CLIENT:
+                    List<Client> clientList = clientService.getAll();
+                    view.showClients(clientList);
+                    break;
+                case ViewMenuItems.ADD_CLIENT:
+                    Client client = view.readClient();
+                    clientService.addClient(client);
+                    break;
+                case ViewMenuItems.ADD_BOOK:
+                    Book book = view.readBook();
+                    bookService.addBook(book);
+                    break;
+                case ViewMenuItems.SEE_ALL_BOOKS:
+                    view.showBooks(bookService.getAllBooks());
 
+            }
+        } catch (ValidatorException validatorException) {
+            view.showException(validatorException.getMessage(), validatorException.getStackTrace());
         }
     }
 }

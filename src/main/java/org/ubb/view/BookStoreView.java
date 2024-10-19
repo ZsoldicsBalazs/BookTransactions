@@ -81,4 +81,9 @@ public class BookStoreView {
     public void showBooks(List<Book> bookList){
         bookList.stream().forEach(book -> System.out.println(book.toString()));
     }
+
+    public void showException(String message, StackTraceElement[] stackTrace) {
+        System.out.println(message);
+        System.out.println(stackTrace);
+    }
 }
