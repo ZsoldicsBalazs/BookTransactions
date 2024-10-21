@@ -5,9 +5,6 @@ import org.ubb.domain.validators.ResourceNotFound;
 import org.ubb.repository.Repository;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Spliterator;
-import java.util.Spliterators;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -28,6 +25,20 @@ public class ClientService {
     public List<Client> getAll() {
         return StreamSupport.stream(clientBookStoreRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());
+    }
+
+    public void updateClient(Client existingClient, Client newClientRequest) {
+        clientBookStoreRepository
+                .findOne(existingClient.getId())
+                .map(client -> {
+                    client.setFirstName(newClientRequest.getFirstName());
+                    client.setLastName(newClientRequest.getLastName());
+                    client.setEmail(newClientRequest.getEmail());
+                    client.setAddress(newClientRequest.getAddress());
+
+                    clientBookStoreRepository.update(client);
+                    return client;
+                }).orElseThrow(() -> new ResourceNotFound("Existing client with id " + existingClient.getId()  + " not found"));
     }
 
 
