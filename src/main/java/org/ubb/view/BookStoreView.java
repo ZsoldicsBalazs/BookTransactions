@@ -21,7 +21,7 @@ public class BookStoreView {
                 .forEach(System.out::println);
 
 
-        ViewMenuItems selectedOption = ViewMenuItems.values()[scanner.nextInt()];
+        ViewMenuItems selectedOption = ViewMenuItems.values()[scanner.nextInt() - 1];
         System.out.println(selectedOption);
         return selectedOption;
 
