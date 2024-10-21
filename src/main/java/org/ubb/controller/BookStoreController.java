@@ -3,6 +3,7 @@ package org.ubb.controller;
 import org.ubb.domain.Book;
 import org.ubb.domain.Client;
 import org.ubb.domain.Transaction;
+import org.ubb.domain.validators.BookStoreException;
 import org.ubb.domain.validators.ValidatorException;
 import org.ubb.service.BookService;
 import org.ubb.service.ClientService;
@@ -55,8 +56,8 @@ public class BookStoreController {
                     view.showBooks(bookService.getAllBooks());
 
             }
-        } catch (ValidatorException validatorException) {
-            view.showException(validatorException.getMessage(), validatorException.getStackTrace());
+        } catch (BookStoreException bookStoreException) {
+            view.showException(bookStoreException.getMessage(), bookStoreException.getStackTrace());
         }
     }
 }
