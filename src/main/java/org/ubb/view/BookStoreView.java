@@ -39,7 +39,7 @@ public class BookStoreView {
     public Client readClient() {
         System.out.println("First name:");
         String firstName = scanner.next();
-        System.out.println("First name:");
+        System.out.println("Last name:");
         String lastName = scanner.next();
         System.out.println("Age:");
         int age = scanner.nextInt();
