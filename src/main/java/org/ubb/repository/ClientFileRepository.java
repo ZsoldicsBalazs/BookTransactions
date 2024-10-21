@@ -1,6 +1,7 @@
 package org.ubb.repository;
 
 import org.ubb.domain.Client;
+import org.ubb.domain.validators.BookStoreException;
 import org.ubb.domain.validators.RepositoryException;
 import org.ubb.domain.validators.Validator;
 import org.ubb.domain.validators.ValidatorException;
@@ -53,14 +54,16 @@ public class ClientFileRepository extends BookStoreRepositoryImpl<Integer, Clien
 
     @Override
     public Optional<Client> update(Client client){
-
+        try {
             Optional<Client> optionalClient = super.update(client);
             if (optionalClient.isPresent()) {
                 deleteAllDataFromFile();
                 super.findAll().forEach(this::saveToFile);
             }
             return optionalClient;
-
+        } catch (Exception e) {
+            throw new RepositoryException(e.getMessage(), e);
+        }
 
     }
 
@@ -74,6 +77,9 @@ public class ClientFileRepository extends BookStoreRepositoryImpl<Integer, Clien
             throw new RepositoryException("----------> Error opening or creating the file",e);
         }
     }
+
+
+
 
     private void readFile() {
         Path path = Path.of(fileName);
@@ -95,7 +101,7 @@ public class ClientFileRepository extends BookStoreRepositoryImpl<Integer, Clien
                         super.save(client);
                     });
         } catch (IOException | ValidatorException exception) {
-            throw new RepositoryException("--------> Error in trying to read Client from File ",exception);
+            throw new RepositoryException(exception);
         }
     }
 
