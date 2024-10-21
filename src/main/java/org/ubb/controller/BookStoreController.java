@@ -43,6 +43,9 @@ public class BookStoreController {
                     Client client = view.readClient();
                     clientService.addClient(client);
                     break;
+                case ViewMenuItems.UPDATE_CLIENT:
+                    Client clientUpdateRequest = view.readClient();
+                    clientService.updateClient(clientUpdateRequest);
                 case ViewMenuItems.ADD_BOOK:
                     Book book = view.readBook();
                     bookService.addBook(book);

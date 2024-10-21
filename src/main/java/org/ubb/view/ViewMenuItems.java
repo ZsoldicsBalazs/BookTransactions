@@ -3,23 +3,27 @@ package org.ubb.view;
 public enum ViewMenuItems {
 
 
-    ADD_CLIENT("0. Add nem client"),
-    READ_CLIENT("1. Show clients"),
-    SELL_BOOKS("2. Creat a new transaction"),
-    SEE_ALL_TRANSACTIONS("3. Show all transactions"),
-    FILTER_TRANSACTIONS("4. Show transactions by criteria"),
-    DELETE_TRANSACTION("5. Delete an existing transaction"),
-    ADD_BOOK("6. Add a new book"),
-    SEE_ALL_BOOKS("7. Show all books"),
-    EXIT("8. Exit");
-    private final String label;
+    ADD_CLIENT("Add nem client", 1),
+    READ_CLIENT("Show clients", 2),
+    UPDATE_CLIENT("Update client", 3),
+    SELL_BOOKS("Creat a new transaction", 4),
+    SEE_ALL_TRANSACTIONS("Show all transactions", 5),
+    FILTER_TRANSACTIONS("Show transactions by criteria", 6),
+    DELETE_TRANSACTION("Delete an existing transaction" ,7),
+    ADD_BOOK("Add a new book", 8),
+    SEE_ALL_BOOKS("Show all books", 9),
+    EXIT("Exit", 10);
 
-    private ViewMenuItems(String shownName) {
+    private final String label;
+    private final int id;
+
+    private ViewMenuItems(String shownName, int id) {
         this.label = shownName;
+        this.id = id;
     }
 
     public String getLabel() {
-        return this.label;
+        return "-- " + this.id + ". " + this.label;
     }
 
 }
