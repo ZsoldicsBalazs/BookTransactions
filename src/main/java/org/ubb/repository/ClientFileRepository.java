@@ -29,9 +29,6 @@ public class ClientFileRepository extends BookStoreRepositoryImpl<Integer, Clien
 
     @Override
     public Optional<Client> save(Client client) {
-        if (client == null) {
-            throw new RuntimeException("The given client is empty");
-        }
         try {
             Optional<Client> optionalClient = super.save(client);
             saveToFile(client);
@@ -56,6 +53,21 @@ public class ClientFileRepository extends BookStoreRepositoryImpl<Integer, Clien
         }
     }
 
+    @Override
+    public Optional<Client> update(Client client){
+        try {
+            Optional<Client> optionalClient = super.update(client);
+            if (optionalClient.isPresent()) {
+                deleteAllDataFromFile();
+                super.findAll().forEach(this::saveToFile);
+            }
+            return optionalClient;
+        } catch (Exception e) {
+            throw new RepositoryException(e.getMessage(), e);
+        }
+
+    }
+
     private void deleteAllDataFromFile() {
         Path path = Path.of(fileName);
         try {
@@ -63,14 +75,11 @@ public class ClientFileRepository extends BookStoreRepositoryImpl<Integer, Clien
             writer.write("");
             writer.flush();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RepositoryException(e);
         }
     }
 
-//    @Override
-//    public Optional<Client> update(Client entity) throws ValidatorException {
-//
-//    }
+
 
 
 
@@ -109,7 +118,7 @@ public class ClientFileRepository extends BookStoreRepositoryImpl<Integer, Clien
             bufferedWriter.write(clientString);
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RepositoryException(e);
 
 
         }

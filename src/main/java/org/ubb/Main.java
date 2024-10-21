@@ -37,6 +37,7 @@ public class Main {
             Repository<Integer,Transaction> transactionRepository = new BookStoreRepositoryImpl<>(transactionValidator);
             TransactionService transactionService = new TransactionService(transactionRepository);
 
+
             Repository<Integer, Client> clientRepository = new ClientFileRepository(clientValidator, "dataFiles/clients.txt");
             ClientService clientService = new ClientService(clientRepository);
 
