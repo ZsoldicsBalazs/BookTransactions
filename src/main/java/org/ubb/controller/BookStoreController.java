@@ -48,6 +48,10 @@ public class BookStoreController {
                     Client clientUpdateRequest = view.readClient();
                     clientService.updateClient(clientUpdateRequest);
                     break;
+                case ViewMenuItems.DELETE_CLIENT:
+                    int clientId = view.readClientId();
+                    clientService.deleteClient(clientId);
+                    break;
                 case ViewMenuItems.ADD_BOOK:
                     Book book = view.readBook();
                     bookService.addBook(book);

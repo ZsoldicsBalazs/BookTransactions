@@ -42,6 +42,9 @@ public class ClientService {
                 }).orElseThrow(() -> new ResourceNotFound("Existing client with id " + existingClientsId  + " not found"));
     }
 
-
+    public void deleteClient(int id) {
+        clientBookStoreRepository
+                .delete(id).orElseThrow(() -> new ResourceNotFound("Client with id " + id + " not found, cannot be deleted"));
+    }
 
 }

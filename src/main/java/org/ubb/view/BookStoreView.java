@@ -86,4 +86,9 @@ public class BookStoreView {
         System.out.println(message);
         System.out.println(stackTrace);
     }
+
+    public int readClientId() {
+        System.out.printf("Plead enter the id of the client: ");
+        return scanner.nextInt();
+    }
 }

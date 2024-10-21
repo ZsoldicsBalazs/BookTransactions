@@ -22,33 +22,37 @@ public class Main {
 
     public static void main(String[] args) {
 
-        BookStoreView bookStoreView = new BookStoreView();
+        try {
+            BookStoreView bookStoreView = new BookStoreView();
 
 
-        Validator<Book> bookValidator = new BookValidatorImpl();
-        Validator<Client> clientValidator = new ClientValidatorImpl();
-        Validator<Transaction> transactionValidator = new TranasactionValidatorImpl();
+            Validator<Book> bookValidator = new BookValidatorImpl();
+            Validator<Client> clientValidator = new ClientValidatorImpl();
+            Validator<Transaction> transactionValidator = new TranasactionValidatorImpl();
 
 
-        Repository<Integer, Book> bookRepository = new BookFileRepository(bookValidator,"dataFiles\\books.txt");
-        BookService bookService = new BookService(bookRepository);
+            Repository<Integer, Book> bookRepository = new BookFileRepository(bookValidator,"dataFiles\\books.txt");
+            BookService bookService = new BookService(bookRepository);
 
-        Repository<Integer,Transaction> transactionRepository = new BookStoreRepositoryImpl<>(transactionValidator);
-        TransactionService transactionService = new TransactionService(transactionRepository);
+            Repository<Integer,Transaction> transactionRepository = new BookStoreRepositoryImpl<>(transactionValidator);
+            TransactionService transactionService = new TransactionService(transactionRepository);
 
-        Repository<Integer, Client> clientRepository = new ClientFileRepository(clientValidator, "dataFiles\\clients.txt");
-        ClientService clientService = new ClientService(clientRepository);
-
-
-        BookStoreController bookStoreController =
-                new BookStoreController(transactionService, bookStoreView, clientService,bookService);
-
-        ViewMenuItems selectedItem = ViewMenuItems.FILTER_TRANSACTIONS;
+            Repository<Integer, Client> clientRepository = new ClientFileRepository(clientValidator, "dataFiles/clients.txt");
+            ClientService clientService = new ClientService(clientRepository);
 
 
-        while (selectedItem != ViewMenuItems.EXIT) {
-            selectedItem = bookStoreView.runMenu();
-            bookStoreController.selectedOption(selectedItem);
+            BookStoreController bookStoreController =
+                    new BookStoreController(transactionService, bookStoreView, clientService,bookService);
+
+            ViewMenuItems selectedItem = ViewMenuItems.FILTER_TRANSACTIONS;
+
+
+            while (selectedItem != ViewMenuItems.EXIT) {
+                selectedItem = bookStoreView.runMenu();
+                bookStoreController.selectedOption(selectedItem);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
 

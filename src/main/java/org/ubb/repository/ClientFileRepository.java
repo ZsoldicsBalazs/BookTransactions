@@ -1,6 +1,8 @@
 package org.ubb.repository;
 
 import org.ubb.domain.Client;
+import org.ubb.domain.validators.BookStoreException;
+import org.ubb.domain.validators.RepositoryException;
 import org.ubb.domain.validators.Validator;
 import org.ubb.domain.validators.ValidatorException;
 
@@ -27,19 +29,46 @@ public class ClientFileRepository extends BookStoreRepositoryImpl<Integer, Clien
 
     @Override
     public Optional<Client> save(Client client) {
-        Optional<Client> optionalClinet = super.save(client);
         if (client == null) {
             throw new RuntimeException("The given client is empty");
         }
-        saveToFile(client);
-        return optionalClinet;
+        try {
+            Optional<Client> optionalClient = super.save(client);
+            saveToFile(client);
+            return optionalClient;
+        } catch (Exception e) {
+            throw new RepositoryException(e.getMessage(), e);
+        }
     }
 
-//    Optional<Client> delete(Integer id) {
-//
-//    }
-//
-//    Optional<Client> update(Client entity) throws ValidatorException {
+
+    @Override
+    public Optional<Client> delete(Integer id) {
+        try {
+            Optional<Client> deletedClinet = super.delete(id);
+            if (deletedClinet.isPresent()) {
+                deleteAllDataFromFile();
+                super.findAll().forEach(this::saveToFile);
+            }
+            return deletedClinet;
+        } catch (Exception e) {
+            throw new RepositoryException(e.getMessage(), e);
+        }
+    }
+
+    private void deleteAllDataFromFile() {
+        Path path = Path.of(fileName);
+        try {
+            BufferedWriter writer = Files.newBufferedWriter(path);
+            writer.write("");
+            writer.flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+//    @Override
+//    public Optional<Client> update(Client entity) throws ValidatorException {
 //
 //    }
 
@@ -65,7 +94,7 @@ public class ClientFileRepository extends BookStoreRepositoryImpl<Integer, Clien
                         super.save(client);
                     });
         } catch (IOException | ValidatorException exception) {
-            throw new RuntimeException(exception);
+            throw new RepositoryException(exception);
         }
     }
 
