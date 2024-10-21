@@ -27,9 +27,10 @@ public class ClientService {
                 .collect(Collectors.toList());
     }
 
-    public void updateClient(Client existingClient, Client newClientRequest) {
+    public void updateClient(Client newClientRequest) {
+        int existingClientsId = newClientRequest.getId();
         clientBookStoreRepository
-                .findOne(existingClient.getId())
+                .findOne(existingClientsId)
                 .map(client -> {
                     client.setFirstName(newClientRequest.getFirstName());
                     client.setLastName(newClientRequest.getLastName());
@@ -38,7 +39,7 @@ public class ClientService {
 
                     clientBookStoreRepository.update(client);
                     return client;
-                }).orElseThrow(() -> new ResourceNotFound("Existing client with id " + existingClient.getId()  + " not found"));
+                }).orElseThrow(() -> new ResourceNotFound("Existing client with id " + existingClientsId  + " not found"));
     }
 
 
