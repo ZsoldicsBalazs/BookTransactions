@@ -1,6 +1,7 @@
 package org.ubb.service;
 
 import org.ubb.domain.Client;
+import org.ubb.domain.validators.ResourceNotFound;
 import org.ubb.repository.Repository;
 
 import java.util.List;
@@ -19,12 +20,16 @@ public class ClientService {
         this.clientBookStoreRepository = clientBookStoreRepository;
     }
 
-    public Optional<Client> addClient(Client client) {
-        return clientBookStoreRepository.save(client);
+    public Client addClient(Client client) {
+        return clientBookStoreRepository.save(client)
+                .orElseThrow(() -> new ResourceNotFound("Client not found"));
     }
 
     public List<Client> getAll() {
         return StreamSupport.stream(clientBookStoreRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());
     }
+
+
+
 }
