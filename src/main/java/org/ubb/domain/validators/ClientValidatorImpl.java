@@ -10,8 +10,7 @@ public class ClientValidatorImpl implements Validator<Client> {
                     || !isLastNameValid(entity)
                     || !isAgeValid(entity)
                     || !isAddressValid(entity)
-                    || !isEmailValid(entity)
-            ){
+                    || !isEmailValid(entity) ) {
                 throw new ValidatorException("Invalid Client");
             }
         }
