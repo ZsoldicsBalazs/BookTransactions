@@ -4,10 +4,7 @@ import org.ubb.controller.BookStoreController;
 import org.ubb.domain.Book;
 import org.ubb.domain.Client;
 import org.ubb.domain.Transaction;
-import org.ubb.domain.validators.BookValidatorImpl;
-import org.ubb.domain.validators.ClientValidatorImpl;
-import org.ubb.domain.validators.TranasactionValidatorImpl;
-import org.ubb.domain.validators.Validator;
+import org.ubb.domain.validators.*;
 import org.ubb.repository.BookFileRepository;
 import org.ubb.repository.BookStoreRepositoryImpl;
 import org.ubb.repository.ClientFileRepository;
@@ -53,7 +50,7 @@ public class Main {
                 bookStoreController.selectedOption(selectedItem);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
 

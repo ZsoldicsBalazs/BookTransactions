@@ -1,8 +1,10 @@
 package org.ubb.repository;
 
 import org.ubb.domain.Book;
+import org.ubb.domain.validators.BookStoreException;
 import org.ubb.domain.validators.Validator;
 import org.ubb.domain.validators.ValidatorException;
+
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -22,7 +24,12 @@ public class BookFileRepository extends BookStoreRepositoryImpl<Integer, Book>{
     public BookFileRepository(Validator<Book> validator, String fileName) {
         super(validator);
         this.fileName = fileName;
-        loadData();
+        try{
+            loadData();
+        }
+        catch (BookStoreException bse){
+            System.out.println("---------------> " + bse.getMessage());
+        }
     }
 
 
@@ -54,10 +61,13 @@ public class BookFileRepository extends BookStoreRepositoryImpl<Integer, Book>{
                 }catch (ValidatorException e){
                     e.printStackTrace();
                 }
+
             });
 
         }catch (IOException ioe){
             ioe.printStackTrace();
+        }catch (NumberFormatException e){
+            throw new BookStoreException("Can't transform string to integer", e);
         }
 
     }
