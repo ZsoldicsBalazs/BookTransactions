@@ -20,6 +20,7 @@ public class ClientService {
     public Client addClient(Client client) {
         return clientBookStoreRepository.save(client)
                 .orElseThrow(() -> new ResourceNotFound("Client not found"));
+//        TODO: Always throws an error for new client.
     }
 
     public List<Client> getAll() {
