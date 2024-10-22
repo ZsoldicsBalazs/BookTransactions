@@ -36,12 +36,24 @@ public class FileRepositoryImpl<ID, Entity extends BaseEntity<ID>> implements Re
                     List<String> lineData = List.of(line.split(";"));
                     Entity newEntity;
                     try {
-                        newEntity = clazz.getDeclaredConstructor(String.class, String.class).newInstance(lineData.get(0), lineData.get(1));
+                        //newEntity = clazz.getDeclaredConstructor(String.class, String.class).newInstance(lineData.get(0), lineData.get(1));
+                        newEntity = clazz.newInstance();
+                        int[] index = {0};
+                        Stream.of(newEntity.getClass().getDeclaredFields()).forEach(field -> {
+                            field.setAccessible(true);
+                            try {
+                                field.set(newEntity, lineData.get(index[0]));
+                            } catch (IllegalAccessException e) {
+                                throw new RuntimeException(e);
+                            }
+                            index[0]++;
+                        });
                     } catch (InstantiationException e) {
                         throw new RuntimeException(e);
-                    } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                    } catch (IllegalAccessException e) {
                         throw new RuntimeException(e);
                     }
+                    System.out.println(newEntity);
                     entities.put(newEntity.getId(), newEntity);
                 });
         } catch (IOException | ValidatorException exception) {

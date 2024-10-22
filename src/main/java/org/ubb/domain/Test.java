@@ -9,6 +9,7 @@ public class Test extends BaseEntity<Integer> {
         this.id = id;
         this.address = address;
     }
+    public Test() {}
 
     @Override
     public String toString() {
