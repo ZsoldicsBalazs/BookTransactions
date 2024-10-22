@@ -12,6 +12,7 @@ import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class FileRepositoryImpl<ID, Entity extends BaseEntity<ID>> implements Repository<ID, Entity> {
@@ -41,6 +42,9 @@ public class FileRepositoryImpl<ID, Entity extends BaseEntity<ID>> implements Re
                         newEntity = clazz.newInstance();
                         int[] index = {0};
 
+                        //setting the id of the object by the supers setter
+                        newEntity.setId((ID) lineData.get(0));
+
                         //accessing all fields of the given generic class
                         Stream.of(newEntity.getClass().getDeclaredFields()).forEach(field -> {
                             field.setAccessible(true);
@@ -68,10 +72,11 @@ public class FileRepositoryImpl<ID, Entity extends BaseEntity<ID>> implements Re
                             field.setAccessible(false);
                             index[0]++;
                         });
+
+                        entities.put(newEntity.getId(), newEntity);
                     } catch (InstantiationException | IllegalAccessException e) {
                         throw new RuntimeException(e);
                     }
-                    entities.put(newEntity.getId(), newEntity);
                 });
         } catch (IOException | ValidatorException exception) {
             throw new RepositoryException(exception);
@@ -96,7 +101,7 @@ public class FileRepositoryImpl<ID, Entity extends BaseEntity<ID>> implements Re
      */
     @Override
     public Iterable<Entity> findAll() {
-        return entities.values();
+        return entities.entrySet().stream().map(Map.Entry::getValue).collect(Collectors.toList());
     }
 
     /**

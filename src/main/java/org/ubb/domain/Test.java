@@ -7,6 +7,7 @@ public class Test extends BaseEntity<Integer> {
     private String phone;
 
     public Test(Integer id, String address, String phone) {
+        super.setId(id);
         this.id = id;
         this.address = address;
         this.phone = phone;
