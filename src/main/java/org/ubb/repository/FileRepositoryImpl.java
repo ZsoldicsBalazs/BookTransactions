@@ -37,17 +37,26 @@ public class FileRepositoryImpl<ID, Entity extends BaseEntity<ID>> implements Re
                     List<String> lineData = List.of(line.split(";"));
                     Entity newEntity;
                     try {
-                        //newEntity = clazz.getDeclaredConstructor(String.class, String.class).newInstance(lineData.get(0), lineData.get(1));
+                        // creating a new Entity instance
                         newEntity = clazz.newInstance();
                         int[] index = {0};
+
+                        //accessing all fields of the given generic class
                         Stream.of(newEntity.getClass().getDeclaredFields()).forEach(field -> {
                             field.setAccessible(true);
+
                             Class<?> typeOfField = field.getType();
+
+                            //accessing the corresponding data from the line for the field
                             String data = lineData.get(index[0]);
+
                             try {
+                                // if the type of the field is not String converting the line data to corresponding type
                                 if (typeOfField != String.class) {
                                     Method valueOf = typeOfField.getMethod("valueOf", String.class);
                                      var convertedData = typeOfField.cast(valueOf.invoke(null, data ));
+
+                                     //setting the objects field value
                                     field.set(newEntity, convertedData);
                                 } else {
                                     field.set(newEntity, data);
@@ -56,14 +65,12 @@ public class FileRepositoryImpl<ID, Entity extends BaseEntity<ID>> implements Re
                             } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                                 throw new RuntimeException(e);
                             }
+                            field.setAccessible(false);
                             index[0]++;
                         });
-                    } catch (InstantiationException e) {
-                        throw new RuntimeException(e);
-                    } catch (IllegalAccessException e) {
+                    } catch (InstantiationException | IllegalAccessException e) {
                         throw new RuntimeException(e);
                     }
-                    System.out.println(newEntity);
                     entities.put(newEntity.getId(), newEntity);
                 });
         } catch (IOException | ValidatorException exception) {
