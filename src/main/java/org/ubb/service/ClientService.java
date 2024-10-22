@@ -35,6 +35,7 @@ public class ClientService {
                     client.setFirstName(newClientRequest.getFirstName());
                     client.setLastName(newClientRequest.getLastName());
                     client.setEmail(newClientRequest.getEmail());
+                    client.setAge(newClientRequest.getAge());
                     client.setAddress(newClientRequest.getAddress());
 
                     clientBookStoreRepository.update(client);
