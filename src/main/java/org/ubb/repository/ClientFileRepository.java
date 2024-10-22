@@ -32,10 +32,13 @@ public class ClientFileRepository extends BookStoreRepositoryImpl<Integer, Clien
         try {
             Optional<Client> optionalClient = super.save(client);
             saveToFile(client);
+
             return optionalClient;
-        } catch (Exception e) {
-            throw new RepositoryException(e.getMessage(), e);
+
+        } catch (BookStoreException e) {
+            System.out.println(e.getMessage());
         }
+        return Optional.empty();
     }
 
 
@@ -75,13 +78,9 @@ public class ClientFileRepository extends BookStoreRepositoryImpl<Integer, Clien
             writer.write("");
             writer.flush();
         } catch (IOException e) {
-            throw new RepositoryException(e);
+            throw new RepositoryException("----------> Error opening or creating the file",e);
         }
     }
-
-
-
-
 
     private void readFile() {
         Path path = Path.of(fileName);
@@ -103,7 +102,7 @@ public class ClientFileRepository extends BookStoreRepositoryImpl<Integer, Clien
                         super.save(client);
                     });
         } catch (IOException | ValidatorException exception) {
-            throw new RepositoryException(exception);
+            throw new RepositoryException("--------> Error in trying to read Client from File ",exception);
         }
     }
 
@@ -118,7 +117,7 @@ public class ClientFileRepository extends BookStoreRepositoryImpl<Integer, Clien
             bufferedWriter.write(clientString);
 
         } catch (IOException e) {
-            throw new RepositoryException(e);
+            throw new RepositoryException("--------->Error in trying to save Client to a file !",e);
 
 
         }

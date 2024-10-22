@@ -4,7 +4,10 @@ import org.ubb.domain.BaseEntity;
 import org.ubb.domain.validators.Validator;
 import org.ubb.domain.validators.ValidatorException;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class BookStoreRepositoryImpl<ID,Entity extends BaseEntity<ID>> implements Repository<ID,Entity>{
@@ -38,7 +41,12 @@ public class BookStoreRepositoryImpl<ID,Entity extends BaseEntity<ID>> implement
         if(entity == null){
             throw new IllegalArgumentException("entity must not be null !");
         }
-        validator.validate(entity);
+        try {
+            validator.validate(entity);
+        }catch(ValidatorException e){
+            System.out.println(e.getMessage());
+        }
+
         return Optional.ofNullable(entities.putIfAbsent(entity.getId(), entity));
     }
 

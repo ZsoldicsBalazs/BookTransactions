@@ -74,12 +74,18 @@ public class BookFileRepository extends BookStoreRepositoryImpl<Integer, Book>{
 
 
     @Override
-    public Optional<Book> save(Book entity) throws ValidatorException {
-        Optional<Book> book = super.save(entity);
-        if (book.isPresent()){
-            return book;
+    public Optional<Book> save(Book entity)  {
+
+        try {
+            Optional<Book> book = super.save(entity);
+            if (book.isPresent()) {
+                saveToFile(entity);
+                return book;
+            }
+
+        }catch (ValidatorException e){
+            System.out.println(e.getMessage());
         }
-        saveToFile(entity);
         return Optional.empty();
 
     }
@@ -92,7 +98,7 @@ public class BookFileRepository extends BookStoreRepositoryImpl<Integer, Book>{
                     book.getId() + "," + book.getTitle() + "," + book.getAuthor() + "," + book.getPublisher() + "," + book.getYear() + "," + book.getPrice());
             bufferedWriter.newLine();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new BookStoreException("Can't write to file", e);
         }
     }
 }

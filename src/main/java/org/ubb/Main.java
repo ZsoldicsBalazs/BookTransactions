@@ -28,7 +28,7 @@ public class Main {
             Validator<Transaction> transactionValidator = new TranasactionValidatorImpl();
 
 
-            Repository<Integer, Book> bookRepository = new BookFileRepository(bookValidator,"dataFiles\\books.txt");
+            Repository<Integer, Book> bookRepository = new BookFileRepository(bookValidator,"dataFiles/books.txt");
             BookService bookService = new BookService(bookRepository);
 
             Repository<Integer,Transaction> transactionRepository = new BookStoreRepositoryImpl<>(transactionValidator);

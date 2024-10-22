@@ -28,7 +28,7 @@ public class BookValidatorImpl implements Validator<Book> {
     }
 
     private void isYearValid(Book book){
-        if( book.getYear() > LocalDateTime.now().getYear() && book.getYear()<0){
+        if( (book.getYear() > LocalDateTime.now().getYear()) || (book.getYear() < 0 )){
             throw new ValidatorException("The year is invalid");
         }
 
