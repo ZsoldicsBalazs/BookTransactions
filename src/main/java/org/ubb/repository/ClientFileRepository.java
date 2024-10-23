@@ -106,6 +106,11 @@ public class ClientFileRepository extends BookStoreRepositoryImpl<Integer, Clien
         }
     }
 
+    /**
+     *  Saves to file a {@code Client} object
+     * @param client must not be null
+     * @throws RepositoryException if you can't open/write in the file
+     */
     private void saveToFile (Client client) {
         Path path = Path.of(fileName);
 

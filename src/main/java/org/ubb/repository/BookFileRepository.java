@@ -86,7 +86,7 @@ public class BookFileRepository extends BookStoreRepositoryImpl<Integer, Book>{
 
             return book;
 
-        }catch (ValidatorException e){
+        }catch (IllegalArgumentException | ValidatorException e){
             System.out.println(e.getMessage());
         }
         return Optional.empty();
