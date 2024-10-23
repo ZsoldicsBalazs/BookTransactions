@@ -78,10 +78,13 @@ public class BookFileRepository extends BookStoreRepositoryImpl<Integer, Book>{
 
         try {
             Optional<Book> book = super.save(entity);
-            if (book.isPresent()) {
+
+            if (book.isEmpty()) {
                 saveToFile(entity);
-                return book;
+                return Optional.of(entity);
             }
+
+            return book;
 
         }catch (ValidatorException e){
             System.out.println(e.getMessage());
