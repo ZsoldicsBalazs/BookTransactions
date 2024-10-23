@@ -31,12 +31,15 @@ public class ClientFileRepository extends BookStoreRepositoryImpl<Integer, Clien
     public Optional<Client> save(Client client) {
         try {
             Optional<Client> optionalClient = super.save(client);
-            saveToFile(client);
-
+            if (optionalClient.isEmpty()) {
+                saveToFile(client);
+                return Optional.of(client);
+            }
             return optionalClient;
+        }
 
-        } catch (BookStoreException e) {
-            System.out.println(e.getMessage());
+        catch (BookStoreException e) {
+            System.out.println("-----------> Failed to add Book with ID " + client.getId() + ".  Reason: " + e.getMessage());
         }
         return Optional.empty();
     }

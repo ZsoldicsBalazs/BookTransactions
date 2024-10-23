@@ -10,6 +10,7 @@ import org.ubb.service.TransactionService;
 import org.ubb.view.BookStoreView;
 import org.ubb.view.ViewMenuItems;
 
+import java.util.InputMismatchException;
 import java.util.List;
 
 public class BookStoreController {
@@ -60,7 +61,7 @@ public class BookStoreController {
                     view.showBooks(bookService.getAllBooks());
 
             }
-        } catch (BookStoreException bookStoreException) {
+        } catch (BookStoreException | InputMismatchException | NullPointerException bookStoreException) {
             view.showException(bookStoreException.getMessage(), bookStoreException.getStackTrace());
         }
     }

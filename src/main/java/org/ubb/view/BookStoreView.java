@@ -35,21 +35,33 @@ public class BookStoreView {
     }
 
     public Client readClient() {
-        System.out.println("First name:");
-        String firstName = scanner.next();
-        System.out.println("Last name:");
-        String lastName = scanner.next();
-        System.out.println("Age:");
-        int age = scanner.nextInt();
-        System.out.println("Address:");
-        String address = scanner.next();
-        System.out.println("Email:");
-        String email = scanner.next();
+        Client client = null;
+        boolean validInput = false;
 
-        System.out.println("ID:");
-        int id = scanner.nextInt();
+        while (!validInput) {
+            try {
+                System.out.println("First name:");
+                String firstName = scanner.next();
+                System.out.println("Last name:");
+                String lastName = scanner.next();
+                System.out.println("Age:");
+                int age = scanner.nextInt();
+                System.out.println("Address:");
+                String address = scanner.next();
+                System.out.println("Email:");
+                String email = scanner.next();
 
-        Client client = new Client(id, firstName, lastName, age, address, email);
+                System.out.println("ID:");
+                int id = scanner.nextInt();
+                validInput = true;
+                client = new Client(id, firstName, lastName, age, address, email);
+
+            }
+            catch (InputMismatchException e) {
+                System.out.println("Invalid input, please retry");
+                scanner.next();
+            }
+        }
         return client;
     }
 
