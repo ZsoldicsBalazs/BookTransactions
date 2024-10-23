@@ -4,7 +4,6 @@ import org.ubb.domain.Book;
 import org.ubb.domain.Client;
 import org.ubb.domain.Transaction;
 import org.ubb.domain.validators.BookStoreException;
-import org.ubb.domain.validators.ValidatorException;
 import org.ubb.service.BookService;
 import org.ubb.service.ClientService;
 import org.ubb.service.TransactionService;
@@ -54,8 +53,9 @@ public class BookStoreController {
                     break;
                 case ViewMenuItems.ADD_BOOK:
                     Book book = view.readBook();
-                    bookService.addBook(book);
-                    break;
+                    if (book != null) {
+                        bookService.addBook(book);
+                    }else break;
                 case ViewMenuItems.SEE_ALL_BOOKS:
                     view.showBooks(bookService.getAllBooks());
 

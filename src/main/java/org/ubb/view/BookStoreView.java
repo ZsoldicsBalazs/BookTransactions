@@ -4,9 +4,7 @@ import org.ubb.domain.Book;
 import org.ubb.domain.Client;
 import org.ubb.domain.Transaction;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class BookStoreView {
 
@@ -61,22 +59,28 @@ public class BookStoreView {
     }
 
     public Book readBook(){
+        Book book = null;
         //    int id,String title, List<String> author, String publisher, int year, double price
-        System.out.println("ID:");
-        int id = scanner.nextInt();
-        System.out.println("Title: ");
-        String title = scanner.next();
-        System.out.println("Author: ");
-        String author = scanner.next();
-        System.out.println("Publisher");
-        String publisher = scanner.next();
-        System.out.println("Year: ");
-        int year = scanner.nextInt();
-        System.out.println("Price: ");
-        double price = scanner.nextDouble();
-        Book book = new Book(id,title,List.of(author),publisher,year,price);
-        return book;
+        try {
+            System.out.println("ID:");
+            int id = scanner.nextInt();
+            System.out.println("Title: ");
+            String title = scanner.next();
+            System.out.println("Author: ");
+            String author = scanner.next();
+            System.out.println("Publisher");
+            String publisher = scanner.next();
+            System.out.println("Year: ");
+            int year = scanner.nextInt();
+            System.out.println("Price: ");
+            double price = scanner.nextDouble();
+           book = new Book(id, title, List.of(author), publisher, year, price);
 
+        }catch (NoSuchElementException  e){
+            System.out.println("Try Again");
+            System.out.println(e.getMessage());
+        }
+        return book;
     }
     public void showBooks(List<Book> bookList){
         bookList.stream().forEach(book -> System.out.println(book.toString()));
