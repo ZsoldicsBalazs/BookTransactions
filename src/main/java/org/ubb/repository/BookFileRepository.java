@@ -78,15 +78,14 @@ public class BookFileRepository extends BookStoreRepositoryImpl<Integer, Book>{
 
         try {
             Optional<Book> book = super.save(entity);
-
             if (book.isEmpty()) {
                 saveToFile(entity);
                 return Optional.of(entity);
             }
-
             return book;
+        }
 
-        }catch (IllegalArgumentException | ValidatorException e){
+        catch (IllegalArgumentException | ValidatorException e){
             System.out.println("-----------> Failed to add Book with ID " + entity.getId() + ".  Reason: " + e.getMessage());
 
         }

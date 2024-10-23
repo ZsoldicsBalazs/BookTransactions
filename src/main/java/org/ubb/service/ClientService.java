@@ -5,6 +5,7 @@ import org.ubb.domain.validators.ResourceNotFound;
 import org.ubb.repository.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -18,9 +19,11 @@ public class ClientService {
     }
 
     public Client addClient(Client client) {
-        return clientBookStoreRepository.save(client)
-                .orElseThrow(() -> new ResourceNotFound("Client not found"));
-//        TODO: Always throws an error for new client.
+        if(client != null) {
+            Optional<Client> returnedClient = clientBookStoreRepository.save(client);
+            return returnedClient.orElse(client);
+        }
+        return null;
     }
 
     public List<Client> getAll() {
