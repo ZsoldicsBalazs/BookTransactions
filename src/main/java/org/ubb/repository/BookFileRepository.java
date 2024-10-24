@@ -2,6 +2,7 @@ package org.ubb.repository;
 
 import org.ubb.domain.Book;
 import org.ubb.domain.validators.BookStoreException;
+import org.ubb.domain.validators.RepositoryException;
 import org.ubb.domain.validators.Validator;
 import org.ubb.domain.validators.ValidatorException;
 
@@ -59,7 +60,7 @@ public class BookFileRepository extends BookStoreRepositoryImpl<Integer, Book>{
                 try{
                     super.save(book);
                 }catch (ValidatorException e){
-                    e.printStackTrace();
+                    throw new ValidatorException(e.getMessage());
                 }
 
             });
@@ -76,21 +77,14 @@ public class BookFileRepository extends BookStoreRepositoryImpl<Integer, Book>{
     @Override
     public Optional<Book> save(Book entity)  {
 
-        try {
             Optional<Book> book = super.save(entity);
             if (book.isEmpty()) {
                 saveToFile(entity);
                 return Optional.of(entity);
             }
-            return book;
-        }
-
-        catch (IllegalArgumentException | ValidatorException e){
-            System.out.println("-----------> Failed to add Book with ID " + entity.getId() + ".  Reason: " + e.getMessage());
-
-        }
-        return Optional.empty();
-
+            else {
+                throw new RepositoryException("This Book already exists");
+            }
     }
 
     private void saveToFile(Book book) {

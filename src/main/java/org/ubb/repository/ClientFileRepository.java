@@ -1,7 +1,6 @@
 package org.ubb.repository;
 
 import org.ubb.domain.Client;
-import org.ubb.domain.validators.BookStoreException;
 import org.ubb.domain.validators.RepositoryException;
 import org.ubb.domain.validators.Validator;
 import org.ubb.domain.validators.ValidatorException;
@@ -29,48 +28,39 @@ public class ClientFileRepository extends BookStoreRepositoryImpl<Integer, Clien
 
     @Override
     public Optional<Client> save(Client client) {
-        try {
+
             Optional<Client> optionalClient = super.save(client);
             if (optionalClient.isEmpty()) {
                 saveToFile(client);
                 return Optional.of(client);
+            }else {
+                throw new RepositoryException("This client already exists");
             }
-            return optionalClient;
-        }
-
-        catch (BookStoreException e) {
-            System.out.println("-----------> Failed to add Book with ID " + client.getId() + ".  Reason: " + e.getMessage());
-        }
-        return Optional.empty();
     }
 
 
     @Override
     public Optional<Client> delete(Integer id) {
-        try {
+
             Optional<Client> deletedClinet = super.delete(id);
             if (deletedClinet.isPresent()) {
                 deleteAllDataFromFile();
                 super.findAll().forEach(this::saveToFile);
             }
             return deletedClinet;
-        } catch (Exception e) {
-            throw new RepositoryException(e.getMessage(), e);
-        }
+
     }
 
     @Override
     public Optional<Client> update(Client client){
-        try {
+
             Optional<Client> optionalClient = super.update(client);
             if (optionalClient.isPresent()) {
                 deleteAllDataFromFile();
                 super.findAll().forEach(this::saveToFile);
             }
             return optionalClient;
-        } catch (Exception e) {
-            throw new RepositoryException(e.getMessage(), e);
-        }
+
 
     }
 

@@ -18,9 +18,8 @@ public class BookService {
      * @param book must not be null
      * @return an {@code Optional} - null if the entity was saved otherwise (e.g. id already exists) returns the entity.
      */
-    public Optional<Book> addBook(Book book) {
-        return bookRepository.save(book);
-    }
+    public Optional<Book> addBook(Book book) {return bookRepository.save(book);}
+
     /**
      * Find the entity with the given {@code id}.
      * @param id must be not null.
@@ -29,6 +28,7 @@ public class BookService {
     public Optional<Book> getBook(int id) {
         return bookRepository.findOne(id);
     }
+
     /**
      * Get all Books in a repository specified
      * @return {@code List<Book>}
@@ -36,6 +36,7 @@ public class BookService {
     public List<Book> getAllBooks() {
         return (List<Book>) bookRepository.findAll();
     }
+
     /**
      * Updates the given entity.
      *

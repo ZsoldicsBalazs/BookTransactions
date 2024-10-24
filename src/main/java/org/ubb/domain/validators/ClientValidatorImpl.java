@@ -5,7 +5,6 @@ import org.ubb.domain.Client;
 public class ClientValidatorImpl implements Validator<Client> {
     @Override
     public void validate(Client entity) throws ValidatorException {
-        try {
             if (!isFirstNameValid(entity)
                     || !isLastNameValid(entity)
                     || !isAgeValid(entity)
@@ -13,11 +12,6 @@ public class ClientValidatorImpl implements Validator<Client> {
                     || !isEmailValid(entity) ) {
                 throw new ValidatorException("Invalid Client");
             }
-        }
-        catch (ValidatorException validatorException){
-            throw new ValidatorException(validatorException.getMessage());
-        }
-
 
     }
 

@@ -60,6 +60,11 @@ public class BookStoreRepositoryImpl<ID,Entity extends BaseEntity<ID>> implement
             throw new IllegalArgumentException("entity must not be null !");
         }
         validator.validate(entity);
-        return Optional.ofNullable(entities.replace(entity.getId(), entity));
+        if(entities.containsKey(entity.getId())){
+            return Optional.ofNullable(entities.replace(entity.getId(), entity));
+        }else {
+            throw new ValidatorException("Entity not found !");
+        }
+
     }
 }
