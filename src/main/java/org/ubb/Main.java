@@ -40,8 +40,9 @@ public class Main {
             TransactionService transactionService = new TransactionService(transactionRepository);
 
 
-            Repository<Integer, Client> clientRepository = new ClientFileRepository(clientValidator, "dataFiles/clients.txt");
-            //Repository<Integer, Client> clientRepository = new FileRepositoryImpl<>("dataFiles/clients.txt", Client.class);
+            //Repository<Integer, Client> clientRepository = new ClientFileRepository(clientValidator, "dataFiles/clients.txt");
+            Repository<Integer, Client> clientRepository =
+                    new FileRepositoryImpl<>("dataFiles/clients.txt", Client.class, clientValidator);
             ClientService clientService = new ClientService(clientRepository);
 
 

@@ -148,7 +148,7 @@ public class FileRepositoryImpl<ID, Entity extends BaseEntity<ID>> implements Re
         if(entity == null){
             throw new IllegalArgumentException(entity.getClass().toString() + " must not be null !");
         }
-        //validator.validate(entity); // throwing validator exception
+        validator.validate(entity); // throwing validator exception
         try {
             Optional<Entity> optionalEntity = Optional.ofNullable(entities.put(entity.getId(), entity));
             saveToFile(entity);
