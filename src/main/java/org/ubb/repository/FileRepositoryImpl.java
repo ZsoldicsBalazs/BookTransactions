@@ -5,12 +5,14 @@ import org.ubb.domain.validators.RepositoryException;
 import org.ubb.domain.validators.Validator;
 import org.ubb.domain.validators.ValidatorException;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -20,11 +22,13 @@ public class FileRepositoryImpl<ID, Entity extends BaseEntity<ID>> implements Re
     private final Map<ID, Entity> entities;
     private final String fileName;
     private final Class<Entity> clazz;
+    private final Validator<Entity> validator;
 
-    public FileRepositoryImpl(String fileName, Class<Entity> clazz) {
+    public FileRepositoryImpl(String fileName, Class<Entity> clazz, Validator<Entity> validator) {
         this.entities =  new HashMap<>();
         this.fileName = fileName;
         this.clazz = clazz;
+        this.validator = validator;
         readFile();
     }
 
@@ -83,6 +87,30 @@ public class FileRepositoryImpl<ID, Entity extends BaseEntity<ID>> implements Re
         }
     }
 
+    private void saveToFile(Entity entity) {
+        Path path = Path.of(fileName);
+        try (BufferedWriter bufferedWriter =  Files.newBufferedWriter(path,  StandardOpenOption.APPEND)) {
+            List<Field> fields = Arrays.stream(clazz.getDeclaredFields()).toList();
+            final String[] entityString = {new String()};
+            fields.forEach(field -> {
+                try {
+                    field.setAccessible(true);
+                    var fieldValue = field.get(entity);
+                    entityString[0] = entityString[0].concat(";" + fieldValue.toString());
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+
+            bufferedWriter.write(entityString[0].substring(1));
+            bufferedWriter.newLine();
+
+        } catch (Exception e) {
+            throw new RepositoryException(e.getMessage());
+        }
+
+    }
+
 
     /**
      * Find the entity with the given {@code id}.
@@ -93,7 +121,10 @@ public class FileRepositoryImpl<ID, Entity extends BaseEntity<ID>> implements Re
      */
     @Override
     public Optional<Entity> findOne(ID id) {
-        return Optional.empty();
+        if(id == null){
+            throw new IllegalArgumentException(" ID must not be null !");
+        }
+        return Optional.ofNullable(entities.get(id));
     }
 
     /**
@@ -114,8 +145,20 @@ public class FileRepositoryImpl<ID, Entity extends BaseEntity<ID>> implements Re
      */
     @Override
     public Optional<Entity> save(Entity entity) throws ValidatorException {
-        return Optional.empty();
+        if(entity == null){
+            throw new IllegalArgumentException(entity.getClass().toString() + " must not be null !");
+        }
+        //validator.validate(entity); // throwing validator exception
+        try {
+            Optional<Entity> optionalEntity = Optional.ofNullable(entities.put(entity.getId(), entity));
+            saveToFile(entity);
+            return optionalEntity;
+        } catch (Exception e) {
+            throw new RepositoryException(e.getMessage(), e);
+        }
     }
+
+
 
     /**
      * Removes the entity with the given id.

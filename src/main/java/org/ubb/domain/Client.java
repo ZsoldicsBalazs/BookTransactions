@@ -21,6 +21,9 @@ public class Client extends BaseEntity<Integer> {
         this.email = email;
     }
 
+    public Client() {
+    }
+
     public String getFirstName() {
         return firstName;
     }
