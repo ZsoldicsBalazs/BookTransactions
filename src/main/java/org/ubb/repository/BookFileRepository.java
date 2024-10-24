@@ -25,12 +25,8 @@ public class BookFileRepository extends BookStoreRepositoryImpl<Integer, Book>{
     public BookFileRepository(Validator<Book> validator, String fileName) {
         super(validator);
         this.fileName = fileName;
-        try{
-            loadData();
-        }
-        catch (BookStoreException bse){
-            System.out.println("---------------> " + bse.getMessage());
-        }
+        loadData();
+
     }
 
 
