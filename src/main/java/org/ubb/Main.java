@@ -4,11 +4,16 @@ import org.ubb.controller.BookStoreController;
 import org.ubb.domain.Book;
 import org.ubb.domain.Client;
 import org.ubb.domain.Transaction;
-import org.ubb.domain.validators.*;
+import org.ubb.domain.validators.BookValidatorImpl;
+import org.ubb.domain.validators.ClientValidatorImpl;
+import org.ubb.domain.validators.TranasactionValidatorImpl;
+import org.ubb.domain.validators.Validator;
 import org.ubb.repository.BookFileRepository;
 import org.ubb.repository.BookStoreRepositoryImpl;
 import org.ubb.repository.ClientFileRepository;
 import org.ubb.repository.Repository;
+import org.ubb.domain.validators.*;
+import org.ubb.repository.*;
 import org.ubb.service.BookService;
 import org.ubb.service.ClientService;
 import org.ubb.service.TransactionService;
@@ -35,7 +40,9 @@ public class Main {
             TransactionService transactionService = new TransactionService(transactionRepository);
 
 
-            Repository<Integer, Client> clientRepository = new ClientFileRepository(clientValidator, "dataFiles/clients.txt");
+            //Repository<Integer, Client> clientRepository = new ClientFileRepository(clientValidator, "dataFiles/clients.txt");
+            Repository<Integer, Client> clientRepository =
+                    new FileRepositoryImpl<>("dataFiles/clients.txt", Client.class, clientValidator);
             ClientService clientService = new ClientService(clientRepository);
 
 

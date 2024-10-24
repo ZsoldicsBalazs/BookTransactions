@@ -5,20 +5,25 @@ import java.util.List;
 
 public class Client extends BaseEntity<Integer> {
 
+    private Integer id;
     private String firstName;
     private String lastName;
-    private int age;
+    private Integer age;
     private String address;
     private String email;
 
 
     public Client(int id, String firstName, String lastName, int age, String address, String email) {
         super.setId(id);
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
         this.address = address;
         this.email = email;
+    }
+
+    public Client() {
     }
 
     public String getFirstName() {
