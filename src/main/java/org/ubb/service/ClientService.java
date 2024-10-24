@@ -19,11 +19,10 @@ public class ClientService {
     }
 
     public Client addClient(Client client) {
-        if(client != null) {
-            Optional<Client> returnedClient = clientBookStoreRepository.save(client);
-            return returnedClient.orElse(client);
-        }
-        return null;
+
+        Optional<Client> returnedClient = clientBookStoreRepository.save(client);
+        return returnedClient.orElse(client);
+
     }
 
     public List<Client> getAll() {
@@ -31,6 +30,7 @@ public class ClientService {
                 .collect(Collectors.toList());
     }
 
+//      TODO: ALWAYS UPDATES IN MEMORY ! check the update logic
     public void updateClient(Client newClientRequest) {
         int existingClientsId = newClientRequest.getId();
         clientBookStoreRepository
@@ -44,7 +44,7 @@ public class ClientService {
 
                     clientBookStoreRepository.update(client);
                     return client;
-                }).orElseThrow(() -> new ResourceNotFound("Existing client with id " + existingClientsId  + " not found"));
+                }).orElseThrow(() -> new ResourceNotFound("Client with id " + existingClientsId  + " not found"));
     }
 
     public void deleteClient(int id) {
