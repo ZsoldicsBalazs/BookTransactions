@@ -10,13 +10,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class BookStoreRepositoryImpl<ID,Entity extends BaseEntity<ID>> implements Repository<ID,Entity>{
+public class InMemoryRepositoryImpl<ID,Entity extends BaseEntity<ID>> implements Repository<ID,Entity>{
 
 
     private Map<ID, Entity> entities;
     private Validator<Entity> validator;
 
-    public BookStoreRepositoryImpl(Validator<Entity> validator) {
+    public InMemoryRepositoryImpl(Validator<Entity> validator) {
         this.validator = validator;
         entities = new HashMap<>();
     }

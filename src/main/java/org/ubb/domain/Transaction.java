@@ -1,42 +1,38 @@
 package org.ubb.domain;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class Transaction extends BaseEntity<Integer>{
 
-    private int id;
-    private List<Book> soldBooks;
-    private Client client;
-    private double totalAmount;
+    private Integer id;
+    private Integer soldBooksIds; // TODO: convert to list
+    private Integer clientId;
+    private Double totalAmount;
 
-    public Transaction(int id ,List<Book> books, Client client) {
+    public Transaction(int id ,Integer books, Integer clientId) {
         super.setId(id);
-        soldBooks = books;
-        this.client = client;
-        calculateTotalAmount();
+        this.id = id;
+        soldBooksIds = books;
+        this.clientId = clientId;
     }
 
-    public void calculateTotalAmount() {
-        this.totalAmount = soldBooks.stream()
-                .map(Book::getPrice)
-                .reduce((double) 0, Double::sum);
+    public Transaction() {}
+
+
+    public Integer getSoldBooksIds() {
+        return soldBooksIds;
     }
 
-    public List<Book> getSoldBooks() {
-        return soldBooks;
+    public void setSoldBooksIds(Integer soldBooksIds) {
+        this.soldBooksIds = soldBooksIds;
     }
 
-    public void setSoldBooks(List<Book> soldBooks) {
-        this.soldBooks = soldBooks;
+    public Integer getClientId() {
+        return clientId;
     }
 
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
+    public void setClientId(Integer clientId) {
+        this.clientId = clientId;
     }
 
     public double getTotalAmount() {
@@ -48,8 +44,8 @@ public class Transaction extends BaseEntity<Integer>{
     public String toString() {
         return "Transaction{" +
                 "id=" + id +
-                ", soldBooks=" + soldBooks +
-                ", client=" + client +
+                ", soldBooks=" + soldBooksIds +
+                ", client=" + clientId +
                 ", totalAmount=" + totalAmount +
                 '}';
     }

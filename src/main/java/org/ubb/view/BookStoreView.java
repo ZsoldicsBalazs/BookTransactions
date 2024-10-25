@@ -86,7 +86,7 @@ public class BookStoreView {
             int year = scanner.nextInt();
             System.out.println("Price: ");
             double price = scanner.nextDouble();
-            book = new Book(id, title, List.of(author), publisher, year, price);
+            book = new Book(id, title, author, publisher, year, price);
 
         }catch (NoSuchElementException  e){
             System.out.println("Invalid input, please retry");
@@ -107,5 +107,11 @@ public class BookStoreView {
     public int readClientId() {
         System.out.printf("Plead enter the id of the client: ");
         return scanner.nextInt();
+    }
+
+    public void showTransactions(List<Transaction> transactionList) {
+        transactionList.stream()
+                .map(transaction -> transactionList.toString())
+                .forEach(System.out::println);
     }
 }

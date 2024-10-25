@@ -4,20 +4,24 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class Book extends BaseEntity<Integer> {
-   private String title;
-   private List<String> author;
-   private String  publisher;
-   private int year;
-   private double price;
+    private Integer id;
+    private String title;
+    private String author;
+    private String  publisher;
+    private Integer year;
+    private Double price;
 
-    public Book(int id,String title, List<String> author, String publisher, int year, double price) {
+    public Book(int id,String title, String author, String publisher, int year, double price) {
         super.setId(id);
+        this.id = id;
         this.title = title;
         this.author = author;
         this.publisher = publisher;
         this.year = year;
         this.price = price;
     }
+
+    public Book() {}
 
     public String getTitle() {
         return title;
@@ -27,11 +31,11 @@ public class Book extends BaseEntity<Integer> {
         this.title = title;
     }
 
-    public List<String> getAuthor() {
+    public String getAuthor() {
         return author;
     }
 
-    public void setAuthor(List<String> author) {
+    public void setAuthor(String author) {
         this.author = author;
     }
 

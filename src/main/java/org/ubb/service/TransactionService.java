@@ -8,6 +8,8 @@ import org.ubb.repository.Repository;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 public class TransactionService {
 
@@ -45,5 +47,11 @@ public class TransactionService {
 
     public Optional<Transaction> deleteTransaction(Transaction transaction) {
         return transactionRepository.delete(transaction.getId());
+    }
+
+    public List<Transaction> getAll() {
+        return StreamSupport
+                .stream(transactionRepository.findAll().spliterator(), false)
+                .toList();
     }
 }

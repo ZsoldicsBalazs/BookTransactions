@@ -8,12 +8,8 @@ import org.ubb.domain.validators.BookValidatorImpl;
 import org.ubb.domain.validators.ClientValidatorImpl;
 import org.ubb.domain.validators.TranasactionValidatorImpl;
 import org.ubb.domain.validators.Validator;
-import org.ubb.repository.BookFileRepository;
-import org.ubb.repository.BookStoreRepositoryImpl;
-import org.ubb.repository.ClientFileRepository;
+import org.ubb.repository.FileRepositoryImpl;
 import org.ubb.repository.Repository;
-import org.ubb.domain.validators.*;
-import org.ubb.repository.*;
 import org.ubb.service.BookService;
 import org.ubb.service.ClientService;
 import org.ubb.service.TransactionService;
@@ -33,21 +29,23 @@ public class Main {
             Validator<Transaction> transactionValidator = new TranasactionValidatorImpl();
 
 
-            Repository<Integer, Book> bookRepository = new BookFileRepository(bookValidator,"dataFiles/books.txt");
+            Repository<Integer, Book> bookRepository =
+                    new FileRepositoryImpl<>("dataFiles/books.txt", Book.class, bookValidator);
             BookService bookService = new BookService(bookRepository);
 
-            Repository<Integer,Transaction> transactionRepository = new BookStoreRepositoryImpl<>(transactionValidator);
+
+            Repository<Integer,Transaction> transactionRepository =
+                    new FileRepositoryImpl<>("dataFiles/transactions.txt",Transaction.class ,transactionValidator);
             TransactionService transactionService = new TransactionService(transactionRepository);
 
 
-            //Repository<Integer, Client> clientRepository = new ClientFileRepository(clientValidator, "dataFiles/clients.txt");
             Repository<Integer, Client> clientRepository =
                     new FileRepositoryImpl<>("dataFiles/clients.txt", Client.class, clientValidator);
             ClientService clientService = new ClientService(clientRepository);
 
 
             BookStoreController bookStoreController =
-                    new BookStoreController(transactionService, bookStoreView, clientService,bookService);
+                    new BookStoreController(transactionService, clientService, bookService, bookStoreView);
 
             ViewMenuItems selectedItem = ViewMenuItems.FILTER_TRANSACTIONS;
 

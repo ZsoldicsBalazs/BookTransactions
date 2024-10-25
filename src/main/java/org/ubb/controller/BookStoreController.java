@@ -20,7 +20,7 @@ public class BookStoreController {
     private final ClientService clientService;
     private final BookService bookService;
 
-    public BookStoreController(TransactionService transactionService, BookStoreView view, ClientService clientService, BookService bookService) {
+    public BookStoreController(TransactionService transactionService, ClientService clientService, BookService bookService, BookStoreView view) {
         this.transactionService = transactionService;
         this.view = view;
         this.clientService = clientService;
@@ -35,6 +35,8 @@ public class BookStoreController {
                     //view.showTransaction(transactionService.createTransaction(transaction));
                     break;
                 case ViewMenuItems.SEE_ALL_TRANSACTIONS:
+                    List<Transaction> transactionList = transactionService.getAll();
+                    view.showTransactions(transactionList);
                     break;
                 case ViewMenuItems.READ_CLIENT:
                     List<Client> clientList = clientService.getAll();
