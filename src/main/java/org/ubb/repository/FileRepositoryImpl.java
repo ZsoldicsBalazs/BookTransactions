@@ -57,7 +57,8 @@ public class FileRepositoryImpl<ID, Entity extends BaseEntity<ID>> implements Re
 
                             //accessing the corresponding data from the line for the field
                             String data = lineData.get(index[0]);
-
+                            // TODO handle lists
+                            // TODO separate method (with generic)
                             try {
                                 // if the type of the field is not String converting the line data to corresponding type
                                 if (typeOfField != String.class) {
