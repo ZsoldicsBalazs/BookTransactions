@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<clients>
+    <client>
+        <id>1</id>
+        <firstName>Ion</firstName>
+        <lastName>Tiriac</lastName>
+        <age>78</age>
+        <address>Craiova</address>
+        <email>tiriac@gmial.com</email>
+    </client>
+    <client>
+        <id>2</id>
+        <firstName>Ariana</firstName>
+        <lastName>Popescu</lastName>
+        <age>32</age>
+        <address>Cluj-Napoca</address>
+        <email>ariana@gmial.com</email>
+    </client>
+</clients>
