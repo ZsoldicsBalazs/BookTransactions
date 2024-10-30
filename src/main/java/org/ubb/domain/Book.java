@@ -1,8 +1,5 @@
 package org.ubb.domain;
 
-import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
-
 public class Book extends BaseEntity<Integer> {
     private Integer id;
     private String title;

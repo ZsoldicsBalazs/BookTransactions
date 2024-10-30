@@ -3,15 +3,18 @@ package org.ubb.repository;
 import org.ubb.domain.BaseEntity;
 import org.ubb.domain.validators.Validator;
 import org.ubb.domain.validators.ValidatorException;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -19,17 +22,18 @@ import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.StreamSupport;
 
-public class XmlRepositoryImpl<ID, Enity extends BaseEntity<ID>> extends InMemoryRepositoryImpl<ID, Enity>{
+public class XmlRepositoryImpl<ID, Entity extends BaseEntity<ID>> extends InMemoryRepositoryImpl<ID, Entity>{
 
-    private final Validator<Enity> validator;
+    private final Validator<Entity> validator;
     private final Path filePath;
-    private final Class<Enity> entityClass;
+    private final Class<Entity> entityClass;
 
 
 
-    public XmlRepositoryImpl(String fileName, Class<Enity> clazz, Validator<Enity> validator) {
+    public XmlRepositoryImpl(String fileName, Class<Entity> clazz, Validator<Entity> validator) {
         super(validator);
         this.validator = validator;
         this.filePath = Path.of(fileName);
@@ -38,16 +42,21 @@ public class XmlRepositoryImpl<ID, Enity extends BaseEntity<ID>> extends InMemor
     }
 
 
+    @Override
+    public Optional<Entity> save(Entity entity) throws ValidatorException {
+        super.save(entity);
+        writeXmlFile(entity);
+        readXmlFile();
+        return Optional.empty();
+    }
+
+
 
 
 
     private void readXmlFile() {
         try {
-            DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document document =  documentBuilder.parse(this.filePath.toFile());
-
-            Element element = document.getDocumentElement();
-
+            Element element = openXmlDocumentsRoot();
 
             NodeList rowDataNodes =  element.getChildNodes();
 
@@ -57,7 +66,7 @@ public class XmlRepositoryImpl<ID, Enity extends BaseEntity<ID>> extends InMemor
                 }
                 Element rowData = (Element) rowDataNodes.item(i);
 
-                Enity newEntity = entityClass.getDeclaredConstructor().newInstance();
+                Entity newEntity = entityClass.getDeclaredConstructor().newInstance();
 
                 StreamSupport.stream(Arrays.stream(entityClass.getDeclaredFields()).spliterator(), false)
                         .forEach(field -> {
@@ -81,8 +90,65 @@ public class XmlRepositoryImpl<ID, Enity extends BaseEntity<ID>> extends InMemor
 
             }
 
-        } catch (ParserConfigurationException | InvocationTargetException | InstantiationException |
-                 IllegalAccessException | NoSuchMethodException | SAXException | IOException e) {
+        } catch ( InvocationTargetException | InstantiationException |
+                 IllegalAccessException | NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
+
+
+    private void writeXmlFile(Entity entity) {
+        try {
+            DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            Document document = documentBuilder.parse(this.filePath.toFile());
+            Element root = document.getDocumentElement();
+
+            Element newObjectElement = document.createElement(entityClass.getName().split("\\.")[3].toLowerCase());
+            AtomicReference<Element> newPropertyElement = new AtomicReference<>();
+            StreamSupport.stream(Arrays.stream(entityClass.getDeclaredFields()).spliterator(), false)
+                    .forEach(field -> {
+                        String fieldName = field.getName();
+                        field.setAccessible(true);
+                        try {
+                            String fieldValue = String.valueOf(field.get(entity));
+                            field.setAccessible(false);
+
+                            newPropertyElement.set(document.createElement(fieldName));
+                            // adding a text value to the node
+                            newPropertyElement.get().appendChild(document.createTextNode(fieldValue));
+                            newObjectElement.appendChild(newPropertyElement.get());
+                        } catch (IllegalAccessException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+            root.appendChild(newObjectElement);
+
+            // Write to XML file
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(document);
+
+            // Specify your local file path
+            StreamResult result = new StreamResult(filePath.toFile());
+            transformer.transform(source, result);
+
+        } catch (ParserConfigurationException | SAXException | IOException | TransformerException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+
+
+
+    private Element openXmlDocumentsRoot() {
+        try {
+            DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            Document document =  documentBuilder.parse(this.filePath.toFile());
+            return document.getDocumentElement();
+        } catch (ParserConfigurationException | SAXException | IOException e) {
             throw new RuntimeException(e);
         }
 

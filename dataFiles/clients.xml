@@ -1,5 +1,4 @@
-<?xml version="1.0"?>
-<clients>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><clients>
     <client>
         <id>1</id>
         <firstName>Ion</firstName>
@@ -16,4 +15,4 @@
         <address>Cluj-Napoca</address>
         <email>ariana@gmial.com</email>
     </client>
-</clients>
+<client><id>5</id><firstName>Ana</firstName><lastName>Maria</lastName><age>45</age><address>Oradea</address><email>ana@gmil.com</email></client></clients>
