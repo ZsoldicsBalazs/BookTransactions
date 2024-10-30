@@ -37,10 +37,10 @@ public class Main {
             BookService bookService = new BookService(bookRepository);
 
 
-//            Repository<Integer,Transaction> transactionRepository =
-//                    new FileRepositoryImpl<>("dataFiles/transactions.txt",Transaction.class ,transactionValidator);
+            Repository<Integer,Transaction> transactionRepository =
+                    new FileRepositoryImpl<>("dataFiles/transactions.txt",Transaction.class ,transactionValidator);
 
-            Repository<Integer,Transaction> transactionRepository = RepositoryFactory.createRepository(Transaction.class,"xml","dataFiles/xml/transaction.xml",transactionValidator);
+//            Repository<Integer,Transaction> transactionRepository = RepositoryFactory.createRepository(Transaction.class,"xml","dataFiles/xml/transaction.xml",transactionValidator);
             TransactionService transactionService = new TransactionService(transactionRepository);
 
 
