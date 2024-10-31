@@ -3,6 +3,7 @@ package org.ubb;
 import org.ubb.controller.BookStoreController;
 import org.ubb.domain.Book;
 import org.ubb.domain.Client;
+import org.ubb.domain.RepoTYPE;
 import org.ubb.domain.Transaction;
 import org.ubb.domain.validators.BookValidatorImpl;
 import org.ubb.domain.validators.ClientValidatorImpl;
@@ -10,7 +11,7 @@ import org.ubb.domain.validators.TranasactionValidatorImpl;
 import org.ubb.domain.validators.Validator;
 import org.ubb.repository.FileRepositoryImpl;
 import org.ubb.repository.Repository;
-import org.ubb.repository.XmlRepositoryImpl;
+import org.ubb.repository.RepositoryFactory;
 import org.ubb.service.BookService;
 import org.ubb.service.ClientService;
 import org.ubb.service.TransactionService;
@@ -30,13 +31,16 @@ public class Main {
             Validator<Transaction> transactionValidator = new TranasactionValidatorImpl();
 
 
-            Repository<Integer, Book> bookRepository =
-                    new FileRepositoryImpl<>("dataFiles/books.txt", Book.class, bookValidator);
+//            Repository<Integer, Book> bookRepository =
+//                    new FileRepositoryImpl<>("dataFiles/books.txt", Book.class, bookValidator);
+            Repository<Integer,Book> bookRepository = RepositoryFactory.createRepository(Book.class, RepoTYPE.XML,"dataFiles/xml/books.xml",bookValidator);
             BookService bookService = new BookService(bookRepository);
 
 
             Repository<Integer,Transaction> transactionRepository =
                     new FileRepositoryImpl<>("dataFiles/transactions.txt",Transaction.class ,transactionValidator);
+
+//            Repository<Integer,Transaction> transactionRepository = RepositoryFactory.createRepository(Transaction.class,RepoTYPE.XML,"dataFiles/xml/transaction.xml",transactionValidator);
             TransactionService transactionService = new TransactionService(transactionRepository);
 
 
@@ -44,9 +48,13 @@ public class Main {
 //                    new FileRepositoryImpl<>("dataFiles/clients.txt", Client.class, clientValidator);
 //            ClientService clientService = new ClientService(clientRepository);
 
-            Repository<Integer, Client> clientRepository =
-                    new XmlRepositoryImpl<>("dataFiles/clients.xml", Client.class, clientValidator);
+//            Repository<Integer, Client> clientRepository =
+//                    new XmlRepositoryImpl<>("dataFiles/clients.xml", Client.class, clientValidator);
+
+            Repository<Integer, Client> clientRepository = RepositoryFactory.createRepository(Client.class,RepoTYPE.XML,"dataFiles/xml/clients.xml",clientValidator);
             ClientService clientService = new ClientService(clientRepository);
+
+
 
 
             BookStoreController bookStoreController =

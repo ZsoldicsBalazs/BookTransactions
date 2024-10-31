@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<clients>
+    <book>
+        <id>1</id>
+        <title>titlu1</title>
+        <author>Popescu</author>
+        <publisher>Publisher1</publisher>
+        <year>1992</year>
+        <price>350</price>
+    </book>
+    <book>
+        <id>2</id>
+        <title>titlu</title>
+        <author>Popescu</author>
+        <publisher>Publisher123</publisher>
+        <year>2012</year>
+        <price>500</price>
+    </book>
+</clients>
