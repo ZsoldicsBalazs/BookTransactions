@@ -1,6 +1,7 @@
 package org.ubb.repository;
 
 import org.ubb.domain.BaseEntity;
+import org.ubb.domain.validators.RepositoryException;
 import org.ubb.domain.validators.Validator;
 import org.ubb.domain.validators.ValidatorException;
 import org.w3c.dom.*;
@@ -51,6 +52,13 @@ public class XmlRepositoryImpl<ID, Entity extends BaseEntity<ID>> extends InMemo
     }
 
 
+    @Override
+    public Optional<Entity> delete(ID id) {
+        Optional<Entity> deletedItem =  super.delete(id);
+        deleteEntityFromXml(id);
+        return deletedItem;
+    }
+
 
 
 
@@ -92,7 +100,7 @@ public class XmlRepositoryImpl<ID, Entity extends BaseEntity<ID>> extends InMemo
 
         } catch ( InvocationTargetException | InstantiationException |
                  IllegalAccessException | NoSuchMethodException e) {
-            throw new RuntimeException(e);
+            throw new RepositoryException(e);
         }
 
 
@@ -120,25 +128,56 @@ public class XmlRepositoryImpl<ID, Entity extends BaseEntity<ID>> extends InMemo
                             newPropertyElement.get().appendChild(document.createTextNode(fieldValue));
                             newObjectElement.appendChild(newPropertyElement.get());
                         } catch (IllegalAccessException e) {
-                            throw new RuntimeException(e);
+                            throw new RepositoryException(e);
                         }
                     });
             root.appendChild(newObjectElement);
 
-            // Write to XML file
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            saveModificationsToXml(document);
+
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            throw new RepositoryException(e);
+        }
+
+    }
+
+    private void saveModificationsToXml(Document document) {
+        // Write to XML file
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        try {
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(document);
 
             // Specify your local file path
             StreamResult result = new StreamResult(filePath.toFile());
             transformer.transform(source, result);
-
-        } catch (ParserConfigurationException | SAXException | IOException | TransformerException e) {
-            throw new RuntimeException(e);
+        } catch (TransformerException e) {
+            throw new RepositoryException(e);
         }
 
     }
+
+    private void deleteEntityFromXml(ID id) {
+        try {
+            DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            Document document = documentBuilder.parse(this.filePath.toFile());
+            Element root = document.getDocumentElement();
+            NodeList nodeList =  root.getChildNodes();
+            for (int i = 0; i < nodeList.getLength(); i++) {
+
+                if (nodeList.item(i).getNodeType() == Node.ELEMENT_NODE
+                        && nodeList.item(i).getFirstChild().getTextContent().equals(id.toString())) {
+                    Node deleted = root.removeChild(nodeList.item(i));
+                }
+            }
+            saveModificationsToXml(document);
+
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            throw new RepositoryException(e);
+        }
+
+    }
+
 
 
 
@@ -149,7 +188,7 @@ public class XmlRepositoryImpl<ID, Entity extends BaseEntity<ID>> extends InMemo
             Document document =  documentBuilder.parse(this.filePath.toFile());
             return document.getDocumentElement();
         } catch (ParserConfigurationException | SAXException | IOException e) {
-            throw new RuntimeException(e);
+            throw new RepositoryException(e);
         }
 
 
@@ -161,7 +200,7 @@ public class XmlRepositoryImpl<ID, Entity extends BaseEntity<ID>> extends InMemo
                 Method valueOf = dataType.getMethod("valueOf", String.class);
                 return dataType.cast(valueOf.invoke(null, valueFromFile ));
             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                throw new RuntimeException(e);
+                throw new RepositoryException(e);
             }
         }
         return valueFromFile;
