@@ -1,5 +1,7 @@
 package org.ubb.repository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.ubb.domain.BaseEntity;
 import org.ubb.domain.validators.RepositoryException;
 import org.ubb.domain.validators.Validator;
@@ -31,7 +33,7 @@ public class XmlRepositoryImpl<ID, Entity extends BaseEntity<ID>> extends InMemo
     private final Validator<Entity> validator;
     private final Path filePath;
     private final Class<Entity> entityClass;
-
+    private final Logger logger = LoggerFactory.getLogger(XmlRepositoryImpl.class);
 
 
     public XmlRepositoryImpl(String fileName, Class<Entity> clazz, Validator<Entity> validator) {
@@ -48,6 +50,7 @@ public class XmlRepositoryImpl<ID, Entity extends BaseEntity<ID>> extends InMemo
         super.save(entity);
         writeXmlFile(entity);
         readXmlFile();
+        logger.info("New entity saved" + entity.toString());
         return Optional.empty();
     }
 
@@ -56,6 +59,7 @@ public class XmlRepositoryImpl<ID, Entity extends BaseEntity<ID>> extends InMemo
     public Optional<Entity> delete(ID id) {
         Optional<Entity> deletedItem =  super.delete(id);
         deleteEntityFromXml(id);
+        logger.info("An entity was deleted");
         return deletedItem;
     }
 

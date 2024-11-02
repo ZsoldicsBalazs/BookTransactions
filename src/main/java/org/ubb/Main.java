@@ -1,5 +1,7 @@
 package org.ubb;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.ubb.controller.BookStoreController;
 import org.ubb.domain.Book;
 import org.ubb.domain.Client;
@@ -21,7 +23,8 @@ import org.ubb.view.ViewMenuItems;
 public class Main {
 
     public static void main(String[] args) {
-
+        final Logger logger = LoggerFactory.getLogger(Main.class);
+        logger.info("Application started");
         try {
             BookStoreView bookStoreView = new BookStoreView();
 
