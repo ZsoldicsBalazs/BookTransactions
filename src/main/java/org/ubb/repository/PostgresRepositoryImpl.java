@@ -15,6 +15,7 @@ public class PostgresRepositoryImpl<ID, Entity extends BaseEntity<ID>> implement
      */
     @Override
     public Optional<Entity> findOne(ID id) {
+        //Ors
         return Optional.empty();
     }
 
@@ -23,6 +24,7 @@ public class PostgresRepositoryImpl<ID, Entity extends BaseEntity<ID>> implement
      */
     @Override
     public Iterable<Entity> findAll() {
+        //Beata
         return null;
     }
 
@@ -36,6 +38,7 @@ public class PostgresRepositoryImpl<ID, Entity extends BaseEntity<ID>> implement
      */
     @Override
     public Optional<Entity> save(Entity entity) throws ValidatorException {
+        //Balazs
         return Optional.empty();
     }
 
@@ -48,6 +51,7 @@ public class PostgresRepositoryImpl<ID, Entity extends BaseEntity<ID>> implement
      */
     @Override
     public Optional<Entity> delete(ID id) {
+        //Bea
         return Optional.empty();
     }
 
@@ -62,6 +66,7 @@ public class PostgresRepositoryImpl<ID, Entity extends BaseEntity<ID>> implement
      */
     @Override
     public Optional<Entity> update(Entity entity) throws ValidatorException {
+        //Balazs
         return Optional.empty();
     }
 }
