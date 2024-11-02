@@ -3,6 +3,7 @@ package org.ubb.repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.ubb.domain.BaseEntity;
+import org.ubb.domain.Client;
 import org.ubb.domain.validators.RepositoryException;
 import org.ubb.domain.validators.Validator;
 import org.ubb.domain.validators.ValidatorException;
@@ -43,6 +44,7 @@ public class XmlRepositoryImpl<ID, Entity extends BaseEntity<ID>> extends InMemo
         this.entityClass = clazz;
         readXmlFile();
     }
+
 
 
     @Override
