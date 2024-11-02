@@ -1,5 +1,7 @@
 package org.ubb.view;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.ubb.domain.Book;
 import org.ubb.domain.Client;
 import org.ubb.domain.Transaction;
@@ -9,6 +11,7 @@ import java.util.*;
 public class BookStoreView {
 
     private Scanner scanner;
+    private final Logger logger = LoggerFactory.getLogger(BookStoreView.class);
     public BookStoreView() {
         scanner = new Scanner(System.in);
     }
@@ -20,7 +23,7 @@ public class BookStoreView {
 
 
         ViewMenuItems selectedOption = ViewMenuItems.values()[scanner.nextInt() - 1];
-        System.out.println(selectedOption);
+        logger.info("You selected the following option:" + selectedOption.toString());
         return selectedOption;
 
     }
