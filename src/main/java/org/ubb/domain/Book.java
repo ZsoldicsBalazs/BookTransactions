@@ -72,4 +72,5 @@ public class Book extends BaseEntity<Integer> {
                 ", price=" + price +
                 '}';
     }
+
 }

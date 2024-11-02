@@ -20,6 +20,8 @@ import org.ubb.service.TransactionService;
 import org.ubb.view.BookStoreView;
 import org.ubb.view.ViewMenuItems;
 
+import java.util.Arrays;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -71,8 +73,9 @@ public class Main {
                 bookStoreController.selectedOption(selectedItem);
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            logger.error(e.getMessage());
+            logger.error(Arrays.toString(e.getStackTrace()));
+
         }
 
 

@@ -1,6 +1,7 @@
 package org.ubb.repository;
 
 import org.ubb.domain.BaseEntity;
+import org.ubb.domain.Book;
 import org.ubb.domain.validators.Validator;
 import org.ubb.domain.validators.ValidatorException;
 
@@ -59,6 +60,8 @@ public class InMemoryRepositoryImpl<ID,Entity extends BaseEntity<ID>> implements
         if(entity == null){
             throw new IllegalArgumentException("entity must not be null !");
         }
+
+
         validator.validate(entity);
         if(entities.containsKey(entity.getId())){
             return Optional.ofNullable(entities.replace(entity.getId(), entity));

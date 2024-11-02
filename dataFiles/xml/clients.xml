@@ -15,4 +15,4 @@
         <address>Cluj-Napoca</address>
         <email>ariana@gmial.com</email>
     </client>
-</clients>
+<client><id>8543</id><firstName>balazs</firstName><lastName>janos</lastName><age>44</age><address>clujnapoca</address><email>asfas@gmal.com</email></client></clients>
