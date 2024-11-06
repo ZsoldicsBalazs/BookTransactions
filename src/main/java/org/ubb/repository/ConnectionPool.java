@@ -2,9 +2,6 @@ package org.ubb.repository;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import org.postgresql.ds.PGConnectionPoolDataSource;
-
-import javax.sql.ConnectionPoolDataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
