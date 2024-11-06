@@ -10,9 +10,9 @@ public class ConnectionPool {
 
     static{
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl("jdbc:postgresql://localhost:5432/postgres");
-        config.setUsername("postgres");
-        config.setPassword("postgres");
+        config.setJdbcUrl("jdbc:postgresql://ep-tiny-surf-a5253x32.us-east-2.aws.neon.tech/postgres");
+        config.setUsername(System.getenv("neon_postgres_user"));
+        config.setPassword(System.getenv("neon_postgres_pass"));
         config.setMaximumPoolSize(5);
         config.setMinimumIdle(1);
         config.setIdleTimeout(30000);

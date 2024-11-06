@@ -15,9 +15,24 @@ public class RepositoryFactory {
                 return new FileRepositoryImpl<>(filePath,entityType,validator);
             case MEMORY:
                 return new InMemoryRepositoryImpl<>(validator);
+            case SQL_POSTGRES:
+                return new PostgresRepositoryImpl<>(validator, entityType);
             default:
                 throw new IllegalArgumentException("Unknown storage type: " + type);
         }
     }
+
+    public static <ID, T extends BaseEntity<ID>> Repository<ID, T> createRepository(
+            Class<T> entityType, RepoTYPE type, Validator validator) {
+        switch (type) {
+            case SQL_POSTGRES:
+                return new PostgresRepositoryImpl<>(validator, entityType);
+            default:
+                throw new IllegalArgumentException("Unknown storage type: " + type);
+        }
+    }
+
+
+
 }
 
