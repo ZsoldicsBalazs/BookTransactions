@@ -14,7 +14,7 @@ public class ConnectionPool {
 //    The connection pool is created when the class is loaded, and it is available globally
     static{
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl("jdbc:postgresql://ep-tiny-surf-a5253x32.us-east-2.aws.neon.tech/postgres");
+        config.setJdbcUrl("jdbc:postgresql://ep-tiny-surf-a5253x32.us-east-2.aws.neon.tech/Book_store");
         config.setUsername(System.getenv("neon_postgres_user"));
         config.setPassword(System.getenv("neon_postgres_pass"));
         config.setMaximumPoolSize(5);

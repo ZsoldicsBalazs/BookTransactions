@@ -117,4 +117,8 @@ public class BookStoreView {
                 .map(transaction -> transactionList.toString())
                 .forEach(System.out::println);
     }
+
+    public void showClient(Client client) {
+        System.out.println(client.toString());
+    }
 }

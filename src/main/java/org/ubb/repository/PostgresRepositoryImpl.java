@@ -58,35 +58,34 @@ public class PostgresRepositoryImpl<ID, Entity extends BaseEntity<ID>> implement
     }
 
 
-    private Optional<Entity> maptResultSetToObject(ResultSet resultSet, Class<Entity> entityClass) {
-        while (true) {
+    private Optional<Entity> maptResultSetToObject(ResultSet resultSet, Class<Entity> entityClass) throws SQLException {
             try {
-                if (!resultSet.next()) {
-                    Entity newEntity = entityClass.getDeclaredConstructor().newInstance();
+                resultSet.next();
+                System.out.println(resultSet.getInt(1));
+                Entity newEntity = entityClass.getDeclaredConstructor().newInstance();
 
-                    StreamSupport.stream(Arrays.stream(entityClass.getDeclaredFields()).spliterator(), false)
-                            .forEach(field -> {
-                                field.setAccessible(true);
-                                Class<?> dataType = field.getType();
-                                try {
-                                    if (field.getName().equals("id")) {
-                                        newEntity.setId((ID) resultSet.getObject(field.getName(), dataType));
-                                    }
-                                    /* TODO to check if the conversion is performed properly */
-                                    field.set(newEntity, resultSet.getObject(field.getName(), dataType));
-                                } catch (IllegalAccessException | SQLException e) {
-                                    throw new RuntimeException(e);
+                StreamSupport.stream(Arrays.stream(entityClass.getDeclaredFields()).spliterator(), false)
+                        .forEach(field -> {
+                            field.setAccessible(true);
+                            Class<?> dataType = field.getType();
+                            try {
+                                if (field.getName().equals("id")) {
+                                    newEntity.setId((ID) resultSet.getObject(field.getName(), dataType));
                                 }
-                                field.setAccessible(false);
-                            });
+                                /* TODO to check if the conversion is performed properly */
+                                field.set(newEntity, resultSet.getObject(field.getName(), dataType));
+                            } catch (IllegalAccessException | SQLException e) {
+                                throw new RuntimeException(e);
+                            }
+                            field.setAccessible(false);
+                        });
 
-                    return Optional.of(newEntity);
-                }
+                return Optional.of(newEntity);
+
             } catch (SQLException | NoSuchMethodException | InstantiationException | IllegalAccessException |
                      InvocationTargetException e) {
                 throw new RepositoryException(e.getMessage());
             }
-        }
     }
 
     /**

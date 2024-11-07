@@ -25,6 +25,12 @@ public class ClientService {
 
     }
 
+    public Client getClient(int id) {
+        return clientBookStoreRepository
+                .findOne(id)
+                .orElseThrow(() -> new ResourceNotFound("Client with id " + id + " not found"));
+    }
+
     public List<Client> getAll() {
         return StreamSupport.stream(clientBookStoreRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());

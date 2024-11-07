@@ -38,9 +38,13 @@ public class BookStoreController {
                     List<Transaction> transactionList = transactionService.getAll();
                     view.showTransactions(transactionList);
                     break;
-                case ViewMenuItems.READ_CLIENT:
+                case ViewMenuItems.SEE_ALL_CLIENTS:
                     List<Client> clientList = clientService.getAll();
                     view.showClients(clientList);
+                    break;
+                case ViewMenuItems.READ_CLIENT:
+                    int id = view.readClientId();
+                    view.showClient(clientService.getClient(id));
                     break;
                 case ViewMenuItems.ADD_CLIENT:
                     Client client = view.readClient();
