@@ -35,6 +35,4 @@ public class ConnectionPool {
 datorită performanței ridicate și a consumului redus de resurse în comparație cu alte
 opțiuni precum Tomcat Connection Pool sau Apache Commons DBCP.
 
-
-
  */
