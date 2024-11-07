@@ -57,7 +57,7 @@ public class Main {
 //                    new XmlRepositoryImpl<>("dataFiles/clients.xml", Client.class, clientValidator);
 
 
-            Repository<Integer, Client> clientRepository = RepositoryFactory.createRepository(Client.class,RepoTYPE.SQL_POSTGRES,clientValidator);
+            Repository<Integer, Client> clientRepository = RepositoryFactory.createRepository(Client.class,RepoTYPE.SQL_POSTGRES,"dataFiles/clients.xml",clientValidator);
             ClientService clientService = new ClientService(clientRepository);
 
 
