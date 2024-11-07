@@ -29,3 +29,12 @@ public class ConnectionPool {
         }
     }
 }
+/*
+    Spring Boot folosește HikariCP ca connection pool implicit pentru sursele de date.
+Începând cu Spring Boot 2.0, HikariCP a fost ales ca connection pool implicit
+datorită performanței ridicate și a consumului redus de resurse în comparație cu alte
+opțiuni precum Tomcat Connection Pool sau Apache Commons DBCP.
+
+
+
+ */
