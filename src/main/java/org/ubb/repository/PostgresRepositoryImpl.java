@@ -29,7 +29,6 @@ public class PostgresRepositoryImpl<ID, Entity extends BaseEntity<ID>> implement
 
     private final Validator<Entity> validator;
     private final Class<Entity> entityClass;
-//    private final ConnectionPool connectionPool = new ConnectionPool();
     private final Logger logger = LoggerFactory.getLogger(PostgresRepositoryImpl.class);
 
     public PostgresRepositoryImpl(Validator<Entity> validator, Class<Entity> entityClass) {

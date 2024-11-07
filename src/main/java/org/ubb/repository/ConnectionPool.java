@@ -7,7 +7,11 @@ import java.sql.SQLException;
 
 public class ConnectionPool {
     private static HikariDataSource dataSource;
+//    Private constructor to prevent instantiation
+    private ConnectionPool() {}
 
+//    ConnectionPool Class initializes the pool in a static block,
+//    The connection pool is created when the class is loaded, and it is available globally
     static{
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl("jdbc:postgresql://ep-tiny-surf-a5253x32.us-east-2.aws.neon.tech/postgres");
