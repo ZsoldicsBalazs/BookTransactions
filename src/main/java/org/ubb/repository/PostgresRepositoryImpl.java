@@ -117,36 +117,33 @@ public class PostgresRepositoryImpl<ID, Entity extends BaseEntity<ID>> implement
 
                     switch (entity) {
                         case Client c -> {
-                            PreparedStatement statement = saveConnection.prepareStatement("INSERT INTO clients VALUES (?,?,?,?,?,?)");
-                            statement.setInt(1, c.getId());
-                            statement.setString(2, c.getFirstName());
-                            statement.setString(3, c.getLastName());
-                            statement.setInt(4, c.getAge());
-                            statement.setString(5, c.getAddress());
-                            statement.setString(6, c.getEmail());
+                            PreparedStatement statement = saveConnection.prepareStatement("INSERT INTO client VALUES (?,?,?,?,?)");
+                            statement.setString(1, c.getFirstName());
+                            statement.setString(2, c.getLastName());
+                            statement.setInt(3, c.getAge());
+                            statement.setString(4, c.getAddress());
+                            statement.setString(5, c.getEmail());
                             statement.executeUpdate();
                             logger.info("Client {} saved successfully");
                             return Optional.empty();
                         }
                         case Book b -> {
-                            PreparedStatement statement = saveConnection.prepareStatement("INSERT INTO books VALUES (?,?,?,?,?,?)");
-                            statement.setInt(1, b.getId());
-                            statement.setString(2, b.getTitle());
-                            statement.setString(3, b.getAuthor());
-                            statement.setString(4, b.getPublisher());
-                            statement.setInt(5, b.getYear());
-                            statement.setDouble(6, b.getPrice());
+                            PreparedStatement statement = saveConnection.prepareStatement("INSERT INTO book VALUES (?,?,?,?,?)");
+                            statement.setString(1, b.getTitle());
+                            statement.setString(2, b.getAuthor());
+                            statement.setString(3, b.getPublisher());
+                            statement.setInt(4, b.getYear());
+                            statement.setDouble(5, b.getPrice());
                             statement.executeUpdate();
                             logger.info("Book {} saved successfully");
                             return Optional.empty();
 
                         }
                         case Transaction t -> {
-                            PreparedStatement statement = saveConnection.prepareStatement("INSERT INTO transactions VALUES (?,?,?,?,?,?)");
-                            statement.setInt(1, t.getId());
-                            statement.setInt(2, t.getSoldBooksIds());
-                            statement.setInt(3, t.getClientId());
-                            statement.setDouble(4, t.getTotalAmount());
+                            PreparedStatement statement = saveConnection.prepareStatement("INSERT INTO transaction VALUES (?,?,?)");
+                            statement.setInt(1, t.getSoldBooksIds());
+                            statement.setInt(2, t.getClientId());
+                            statement.setDouble(3, t.getTotalAmount());
                             statement.executeUpdate();
                             logger.info("Transaction, with ID{ {}} saved successfully");
                             return Optional.empty();
