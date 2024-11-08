@@ -1,5 +1,6 @@
 package org.ubb.repository;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.ubb.domain.BaseEntity;
@@ -11,19 +12,15 @@ import org.ubb.domain.validators.Validator;
 import org.ubb.domain.validators.ValidatorException;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import javax.swing.*;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
-
 import java.util.stream.StreamSupport;
 
 public class PostgresRepositoryImpl<ID, Entity extends BaseEntity<ID>> implements Repository<ID, Entity>{
@@ -53,38 +50,40 @@ public class PostgresRepositoryImpl<ID, Entity extends BaseEntity<ID>> implement
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setObject(1,id);
             ResultSet resultSet = statement.executeQuery();
-            return maptResultSetToObject(resultSet ,entityClass);
+            if (!resultSet.next()) {
+                return Optional.empty();
+            }
+            return mapResultSetToObject(resultSet ,entityClass);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RepositoryException(e);
         }
     }
 
 
-    private Optional<Entity> maptResultSetToObject(ResultSet resultSet, Class<Entity> entityClass) throws SQLException {
+    private Optional<Entity> mapResultSetToObject(ResultSet resultSet, Class<Entity> entityClass) throws SQLException {
             try {
-                resultSet.next();
-                System.out.println(resultSet.getInt(1));
                 Entity newEntity = entityClass.getDeclaredConstructor().newInstance();
 
                 StreamSupport.stream(Arrays.stream(entityClass.getDeclaredFields()).spliterator(), false)
                         .forEach(field -> {
-                            field.setAccessible(true);
                             Class<?> dataType = field.getType();
                             try {
                                 if (field.getName().equals("id")) {
                                     newEntity.setId((ID) resultSet.getObject(field.getName(), dataType));
                                 }
-                                /* TODO to check if the conversion is performed properly */
-                                field.set(newEntity, resultSet.getObject(field.getName(), dataType));
-                            } catch (IllegalAccessException | SQLException e) {
-                                throw new RuntimeException(e);
+                                Method fieldSetter = entityClass
+                                        .getDeclaredMethod("set" + StringUtils.capitalize(field.getName()), dataType);
+                                fieldSetter.invoke(newEntity, resultSet.getObject(field.getName(), dataType));
+
+                            } catch (IllegalAccessException | SQLException | NoSuchMethodException |
+                                     InvocationTargetException e) {
+                                throw new RepositoryException(e);
                             }
-                            field.setAccessible(false);
                         });
 
                 return Optional.of(newEntity);
 
-            } catch (SQLException | NoSuchMethodException | InstantiationException | IllegalAccessException |
+            } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
                      InvocationTargetException e) {
                 throw new RepositoryException(e.getMessage());
             }
@@ -103,7 +102,7 @@ public class PostgresRepositoryImpl<ID, Entity extends BaseEntity<ID>> implement
              ResultSet resultSet = statement.executeQuery()) {
 
             while (resultSet.next()) {
-                Optional<Entity> entity = maptResultSetToObject(resultSet, entityClass);
+                Optional<Entity> entity = mapResultSetToObject(resultSet, entityClass);
                 entity.ifPresent(entities::add);
             }
 
@@ -177,7 +176,7 @@ public class PostgresRepositoryImpl<ID, Entity extends BaseEntity<ID>> implement
                         }
 
 
-                        default -> throw new RuntimeException("Unknown entity type" + entity);
+                        default -> throw new RepositoryException("Unknown entity type" + entity);
                     }
 
         }
@@ -199,14 +198,14 @@ public class PostgresRepositoryImpl<ID, Entity extends BaseEntity<ID>> implement
     public Optional<Entity> delete(ID id) {
         String query = "DELETE FROM " + entityClass.getSimpleName() + " WHERE id = ? RETURNING *";
 
-        try (Connection connection = connectionPool.getConnection();
+        try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
 
             statement.setObject(1, id);
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                return maptResultSetToObject(resultSet, entityClass);
+                return mapResultSetToObject(resultSet, entityClass);
             }
 
         } catch (SQLException e) {

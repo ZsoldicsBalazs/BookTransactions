@@ -88,7 +88,7 @@ public class BookStoreView {
             System.out.println("Year: ");
             int year = scanner.nextInt();
             System.out.println("Price: ");
-            double price = scanner.nextDouble();
+            float price = scanner.nextFloat();
             book = new Book(id, title, author, publisher, year, price);
 
         }catch (NoSuchElementException  e){

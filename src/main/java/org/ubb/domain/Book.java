@@ -1,16 +1,14 @@
 package org.ubb.domain;
 
 public class Book extends BaseEntity<Integer> {
-    private Integer id;
     private String title;
     private String author;
     private String  publisher;
     private Integer year;
-    private Double price;
+    private Float price;
 
-    public Book(int id,String title, String author, String publisher, int year, double price) {
+    public Book(int id,String title, String author, String publisher, int year, float price) {
         super.setId(id);
-        this.id = id;
         this.title = title;
         this.author = author;
         this.publisher = publisher;
@@ -56,7 +54,7 @@ public class Book extends BaseEntity<Integer> {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 

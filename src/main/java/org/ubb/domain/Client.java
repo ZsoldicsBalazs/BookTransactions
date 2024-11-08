@@ -1,11 +1,8 @@
 package org.ubb.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Client extends BaseEntity<Integer> {
 
-    private Integer id;
+
     private String firstName;
     private String lastName;
     private Integer age;
@@ -13,9 +10,8 @@ public class Client extends BaseEntity<Integer> {
     private String email;
 
 
-    public Client(int id, String firstName, String lastName, int age, String address, String email) {
+    public Client(int id, String firstName, String lastName, Integer age, String address, String email) {
         super.setId(id);
-        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
@@ -46,7 +42,7 @@ public class Client extends BaseEntity<Integer> {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 

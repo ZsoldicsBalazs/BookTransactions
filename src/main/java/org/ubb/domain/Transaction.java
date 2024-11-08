@@ -1,17 +1,14 @@
 package org.ubb.domain;
 
-import java.util.List;
-
 public class Transaction extends BaseEntity<Integer>{
 
-    private Integer id;
+
     private Integer soldBooksIds; // TODO: convert to list
     private Integer clientId;
     private Double totalAmount;
 
     public Transaction(int id ,Integer books, Integer clientId) {
         super.setId(id);
-        this.id = id;
         soldBooksIds = books;
         this.clientId = clientId;
     }
@@ -43,7 +40,7 @@ public class Transaction extends BaseEntity<Integer>{
     @Override
     public String toString() {
         return "Transaction{" +
-                "id=" + id +
+                "id=" + super.getId() +
                 ", soldBooks=" + soldBooksIds +
                 ", client=" + clientId +
                 ", totalAmount=" + totalAmount +
