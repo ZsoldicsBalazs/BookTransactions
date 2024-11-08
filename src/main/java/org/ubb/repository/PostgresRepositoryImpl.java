@@ -130,7 +130,9 @@ public class PostgresRepositoryImpl<ID, Entity extends BaseEntity<ID>> implement
 
                     switch (entity) {
                         case Client c -> {
-                            PreparedStatement statement = saveConnection.prepareStatement("INSERT INTO client (firstname,lastname,age,address,email) SELECT ?,?,?,?,? WHERE NOT EXISTS (SELECT 1 FROM client WHERE firstname = ? AND lastname =? AND email = ?)");
+                            PreparedStatement statement = saveConnection.prepareStatement(
+                                    "INSERT INTO client (firstname,lastname,age,address,email) SELECT ?,?,?,?,? " +
+                                            "WHERE NOT EXISTS (SELECT 1 FROM client WHERE firstname = ? AND lastname =? AND email = ?)");
                             statement.setString(1, c.getFirstName());
                             statement.setString(2, c.getLastName());
                             statement.setInt(3, c.getAge());
