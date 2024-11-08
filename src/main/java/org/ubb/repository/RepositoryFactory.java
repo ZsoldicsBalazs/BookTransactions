@@ -16,5 +16,14 @@ public class RepositoryFactory {
             default -> throw new IllegalArgumentException("Unknown storage type: " + type);
         };
     }
+    public static <ID, T extends BaseEntity<ID>> Repository<ID, T> createRepository(
+            Class<T> entityType, RepoTYPE type, Validator<T> validator) {
+        return switch (type) {
+            case SQL_POSTGRES -> new PostgresRepositoryImpl<>(validator,entityType);
+            default -> throw new IllegalArgumentException("Unknown storage type: " + type);
+        };
+    }
+
+
 }
 

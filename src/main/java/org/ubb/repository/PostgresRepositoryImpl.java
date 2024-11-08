@@ -111,31 +111,40 @@ public class PostgresRepositoryImpl<ID, Entity extends BaseEntity<ID>> implement
 
         try (Connection saveConnection = ConnectionPool.getConnection()) {
 
-            Optional<Entity> existingClient = findOne(entity.getId());
-
-            if (existingClient.isEmpty()) {
-
                     switch (entity) {
                         case Client c -> {
-                            PreparedStatement statement = saveConnection.prepareStatement("INSERT INTO client VALUES (?,?,?,?,?)");
+                            PreparedStatement statement = saveConnection.prepareStatement("INSERT INTO client (firstname,lastname,age,address,email) SELECT ?,?,?,?,? WHERE NOT EXISTS (SELECT 1 FROM client WHERE firstname = ? AND lastname =? AND email = ?)");
                             statement.setString(1, c.getFirstName());
                             statement.setString(2, c.getLastName());
                             statement.setInt(3, c.getAge());
                             statement.setString(4, c.getAddress());
                             statement.setString(5, c.getEmail());
-                            statement.executeUpdate();
-                            logger.info("Client {} saved successfully");
+
+                            //NOT EXISTS PART
+                            statement.setString(6,c.getFirstName());
+                            statement.setString(7,c.getLastName());
+                            statement.setString(8,c.getEmail());
+
+                            int rowsAffected = statement.executeUpdate();
+                            if (rowsAffected > 0) {
+                                logger.info("Client {} saved successfully, {} Rows Affected",c.getId(), rowsAffected);
+                            }else
+                                logger.info("Client with firstname {} lastname {} email {} already exists", c.getFirstName(),c.getLastName(),c.getEmail());
+
                             return Optional.empty();
+
+
+
                         }
                         case Book b -> {
-                            PreparedStatement statement = saveConnection.prepareStatement("INSERT INTO book VALUES (?,?,?,?,?)");
+                            PreparedStatement statement = saveConnection.prepareStatement("INSERT INTO book (title,author,publisher,year,price) VALUES (?,?,?,?,?)");
                             statement.setString(1, b.getTitle());
                             statement.setString(2, b.getAuthor());
                             statement.setString(3, b.getPublisher());
                             statement.setInt(4, b.getYear());
                             statement.setDouble(5, b.getPrice());
                             statement.executeUpdate();
-                            logger.info("Book {} saved successfully");
+                            logger.info("Book {} saved successfully",b.getId());
                             return Optional.empty();
 
                         }
@@ -145,22 +154,20 @@ public class PostgresRepositoryImpl<ID, Entity extends BaseEntity<ID>> implement
                             statement.setInt(2, t.getClientId());
                             statement.setDouble(3, t.getTotalAmount());
                             statement.executeUpdate();
-                            logger.info("Transaction, with ID{ {}} saved successfully");
+                            logger.info("Transaction, with ID{} saved successfully");
                             return Optional.empty();
                         }
 
 
                         default -> throw new RuntimeException("Unknown entity type" + entity);
                     }
-            }
+
         }
 
         catch(SQLException e){
             throw new RepositoryException(e.getMessage(), e);
         }
 
-        logger.info("Entity already exists in database !");
-        return Optional.of(entity);
     }
 
     /**
