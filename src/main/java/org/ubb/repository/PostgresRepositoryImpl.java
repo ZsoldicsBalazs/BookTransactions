@@ -15,11 +15,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import javax.swing.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 import java.util.stream.StreamSupport;
@@ -93,8 +95,24 @@ public class PostgresRepositoryImpl<ID, Entity extends BaseEntity<ID>> implement
      */
     @Override
     public Iterable<Entity> findAll() {
-        //Beata
-        return null;
+        List<Entity> entities = new ArrayList<>();
+        String query = "SELECT * FROM " + entityClass.getSimpleName();
+
+        try (Connection connection = ConnectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
+
+            while (resultSet.next()) {
+                Optional<Entity> entity = maptResultSetToObject(resultSet, entityClass);
+                entity.ifPresent(entities::add);
+            }
+
+        } catch (SQLException e) {
+            throw new RepositoryException("Error retrieving entities: " + e.getMessage());
+        }
+
+        return entities;
+
     }
 
     /**
@@ -179,7 +197,22 @@ public class PostgresRepositoryImpl<ID, Entity extends BaseEntity<ID>> implement
      */
     @Override
     public Optional<Entity> delete(ID id) {
-        //Bea
+        String query = "DELETE FROM " + entityClass.getSimpleName() + " WHERE id = ? RETURNING *";
+
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setObject(1, id);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                return maptResultSetToObject(resultSet, entityClass);
+            }
+
+        } catch (SQLException e) {
+            throw new RepositoryException("Error deleting entity with id " + id + ": " + e.getMessage());
+        }
+
         return Optional.empty();
     }
 
