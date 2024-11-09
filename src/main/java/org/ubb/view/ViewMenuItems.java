@@ -14,7 +14,8 @@ public enum ViewMenuItems {
     DELETE_TRANSACTION("Delete an existing transaction" ,9),
     ADD_BOOK("Add a new book", 10),
     SEE_ALL_BOOKS("Show all books", 11),
-    EXIT("Exit", 12);
+    EXIT("Exit", 12),
+    FILTER_CLIENTS_AGE("Filter clients between ages",13);
 
     private final String label;
     private final int id;

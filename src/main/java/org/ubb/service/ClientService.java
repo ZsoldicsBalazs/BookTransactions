@@ -58,4 +58,10 @@ public class ClientService {
                 .delete(id).orElseThrow(() -> new ResourceNotFound("Client with id " + id + " not found, cannot be deleted"));
     }
 
+    public List<Client> filterClientByAge(int fromAge, int toAge){
+        List<Client> allClients = getAll();
+
+        return allClients.stream().filter(client -> client.getAge() >= fromAge && client.getAge() <= toAge).collect(Collectors.toList());
+    }
+
 }
