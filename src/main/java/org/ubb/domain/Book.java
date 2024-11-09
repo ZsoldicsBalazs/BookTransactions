@@ -50,7 +50,7 @@ public class Book extends BaseEntity<Integer> {
         this.year = year;
     }
 
-    public double getPrice() {
+    public float getPrice() {
         return price;
     }
 

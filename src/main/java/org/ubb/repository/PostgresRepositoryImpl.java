@@ -147,24 +147,37 @@ public class PostgresRepositoryImpl<ID, Entity extends BaseEntity<ID>> implement
                             int rowsAffected = statement.executeUpdate();
                             if (rowsAffected > 0) {
                                 logger.info("Client {} saved successfully, {} Rows Affected",c.getId(), rowsAffected);
-                            }else
-                                logger.info("Client with firstname {} lastname {} email {} already exists", c.getFirstName(),c.getLastName(),c.getEmail());
-
-                            return Optional.empty();
+                                return Optional.empty();
+                            }else {
+                                logger.info("Client with firstname {} lastname {} email {} already exists", c.getFirstName(), c.getLastName(), c.getEmail());
+                                return Optional.of(entity);
+                            }
 
 
 
                         }
                         case Book b -> {
-                            PreparedStatement statement = saveConnection.prepareStatement("INSERT INTO book (title,author,publisher,year,price) VALUES (?,?,?,?,?)");
+                            PreparedStatement statement = saveConnection.prepareStatement(
+                                    "INSERT INTO book (title,author,publisher,year,price) SELECT ?,?,?,?,? " +
+                                            "WHERE NOT EXISTS (SELECT 1 FROM book WHERE title = ? AND author = ? AND year = ?)");
                             statement.setString(1, b.getTitle());
                             statement.setString(2, b.getAuthor());
                             statement.setString(3, b.getPublisher());
                             statement.setInt(4, b.getYear());
-                            statement.setDouble(5, b.getPrice());
-                            statement.executeUpdate();
-                            logger.info("Book {} saved successfully",b.getId());
-                            return Optional.empty();
+                            statement.setFloat(5, b.getPrice());
+
+                            statement.setString(6,b.getTitle());
+                            statement.setString(7,b.getAuthor());
+                            statement.setInt(8,b.getYear());
+
+                            int rowsAffected = statement.executeUpdate();
+                            if (rowsAffected > 0) {
+                                logger.info("Book {} saved successfully, {} Rows Affected",b.getId(), rowsAffected);
+                                return Optional.empty();
+                            }else {
+                                logger.info("Book with firstname {} lastname {} email {} already exists", b.getTitle(), b.getAuthor(), b.getYear());
+                                return Optional.of(entity);
+                            }
 
                         }
                         case Transaction t -> {

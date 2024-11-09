@@ -4,8 +4,12 @@
 //import org.junit.jupiter.api.BeforeAll;
 //import org.junit.jupiter.api.Test;
 //import org.mockito.ArgumentMatchers;
+//import org.mockito.InjectMocks;
+//import org.mockito.Mock;
 //import org.ubb.domain.Book;
 //import org.ubb.repository.BookFileRepository;
+//import org.ubb.repository.Repository;
+//
 //import java.util.List;
 //import java.util.Optional;
 //import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -15,8 +19,12 @@
 //
 //class BookServiceTest {
 //    public static final Book BOOK = new Book(1, "titlu", "autor1", "publishje", 1999, 200.00);
+//
+//
+//    @Mock
+//    public Repository repository;
+//    @InjectMocks
 //    static BookService bookService;
-//    static BookFileRepository repository;
 //
 //    @BeforeAll
 //    static void setUp() {
