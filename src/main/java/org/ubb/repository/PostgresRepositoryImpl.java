@@ -242,6 +242,41 @@ public class PostgresRepositoryImpl<ID, Entity extends BaseEntity<ID>> implement
     @Override
     public Optional<Entity> update(Entity entity) throws ValidatorException {
         //Balazs
+        validator.validate(entity);
+
+        try(Connection connection = ConnectionPool.getConnection()) {
+            switch (entity) {
+                case Client c -> {
+                    String sql = "UPDATE " + entityClass.getSimpleName() +
+                            " SET firstname = ? lastname = ? age = ? adress = ? email = ? WHERE id = ?";
+                    PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                    preparedStatement.setString(1,c.getFirstName());
+                    preparedStatement.setString(2,c.getLastName());
+                    preparedStatement.setInt(3,c.getAge());
+                    preparedStatement.setString(4,c.getAddress());
+                    preparedStatement.setString(5,c.getEmail());
+                    preparedStatement.setInt(6,c.getId());
+
+                }
+                case Book b -> {
+                    String sql = "UPDATE " + entityClass.getSimpleName() +
+                            " SET title = ? author = ? publisher = ? year = ? price = ? WHERE id = ?";
+                    PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                    preparedStatement.setString(1,b.getTitle());
+                    preparedStatement.setString(2,b.getAuthor());
+                    preparedStatement.setString(3,b.getPublisher());
+                    preparedStatement.setInt(4,b.getYear());
+                    preparedStatement.setFloat(5,b.getPrice());
+                    preparedStatement.setInt(6,b.getId());
+                }
+                default -> throw new RepositoryException("Unknown entity type" + entity);
+            }
+        }
+        catch (SQLException e){
+
+        }
+
+
         return Optional.empty();
     }
 }
