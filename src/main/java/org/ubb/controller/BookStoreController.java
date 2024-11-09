@@ -65,7 +65,8 @@ public class BookStoreController {
                     }else break;
                 case ViewMenuItems.SEE_ALL_BOOKS:
                     view.showBooks(bookService.getAllBooks());
-
+                case ViewMenuItems.FILTER_CLIENTS_AGE:
+                    view.FilterClients(clientService.filterClientByAge(view.readClientAge(), view.readClientAge()));
             }
         } catch (BookStoreException | InputMismatchException | NullPointerException bookStoreException) {
             view.showException(bookStoreException.getMessage(), bookStoreException.getStackTrace());

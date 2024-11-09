@@ -121,4 +121,14 @@ public class BookStoreView {
     public void showClient(Client client) {
         System.out.println(client.toString());
     }
+
+    public int readClientAge(){
+        System.out.println("Introduce varsta clientului");
+        return scanner.nextInt();
+    }
+    public void FilterClients(List<Client> clientList) {
+
+        clientList.forEach(client -> System.out.println(client.toString()));
+
+    }
 }
