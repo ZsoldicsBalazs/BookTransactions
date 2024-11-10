@@ -5,9 +5,9 @@ public class Book extends BaseEntity<Integer> {
     private String author;
     private String  publisher;
     private Integer year;
-    private Float price;
+    private Double price;
 
-    public Book(int id,String title, String author, String publisher, int year, float price) {
+    public Book(int id,String title, String author, String publisher, Integer year, Double price) {
         super.setId(id);
         this.title = title;
         this.author = author;
@@ -46,15 +46,15 @@ public class Book extends BaseEntity<Integer> {
         return year;
     }
 
-    public void setYear(int year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 
-    public float getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

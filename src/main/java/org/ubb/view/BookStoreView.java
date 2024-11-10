@@ -88,7 +88,7 @@ public class BookStoreView {
             System.out.println("Year: ");
             int year = scanner.nextInt();
             System.out.println("Price: ");
-            float price = scanner.nextFloat();
+            Double price = scanner.nextDouble();
             book = new Book(id, title, author, publisher, year, price);
 
         }catch (NoSuchElementException  e){
@@ -129,6 +129,7 @@ public class BookStoreView {
     public void FilterClients(List<Client> clientList) {
 
         clientList.forEach(client -> System.out.println(client.toString()));
-
     }
+
+
 }

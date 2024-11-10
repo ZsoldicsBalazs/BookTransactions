@@ -36,7 +36,6 @@ public class ClientService {
                 .collect(Collectors.toList());
     }
 
-//      TODO: ALWAYS UPDATES IN MEMORY ! check the update logic
     public void updateClient(Client newClientRequest) {
         int existingClientsId = newClientRequest.getId();
         clientBookStoreRepository

@@ -62,14 +62,16 @@ public class BookStoreController {
                     Book book = view.readBook();
                     if (book != null) {
                         bookService.addBook(book);
-                    }else break;
+                    }
+                    break;
                 case ViewMenuItems.SEE_ALL_BOOKS:
                     view.showBooks(bookService.getAllBooks());
+                    break;
                 case ViewMenuItems.FILTER_CLIENTS_AGE:
                     view.FilterClients(clientService.filterClientByAge(view.readClientAge(), view.readClientAge()));
             }
         } catch (BookStoreException | InputMismatchException | NullPointerException bookStoreException) {
-            view.showException(bookStoreException.getMessage(), bookStoreException.getStackTrace());
+            view.showException(bookStoreException.getMessage(), bookStoreException.getCause().getStackTrace());
         }
     }
 }

@@ -63,14 +63,12 @@ public class PostgresRepositoryImpl<ID, Entity extends BaseEntity<ID>> implement
     private Optional<Entity> mapResultSetToObject(ResultSet resultSet, Class<Entity> entityClass) throws SQLException {
             try {
                 Entity newEntity = entityClass.getDeclaredConstructor().newInstance();
+                newEntity.setId((ID) resultSet.getObject("id", Integer.class));
 
                 StreamSupport.stream(Arrays.stream(entityClass.getDeclaredFields()).spliterator(), false)
                         .forEach(field -> {
                             Class<?> dataType = field.getType();
                             try {
-                                if (field.getName().equals("id")) {
-                                    newEntity.setId((ID) resultSet.getObject(field.getName(), dataType));
-                                }
                                 Method fieldSetter = entityClass
                                         .getDeclaredMethod("set" + StringUtils.capitalize(field.getName()), dataType);
                                 fieldSetter.invoke(newEntity, resultSet.getObject(field.getName(), dataType));
@@ -85,7 +83,7 @@ public class PostgresRepositoryImpl<ID, Entity extends BaseEntity<ID>> implement
 
             } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
                      InvocationTargetException e) {
-                throw new RepositoryException(e.getMessage());
+                throw new RepositoryException(e.getMessage(), e.getCause());
             }
     }
 
@@ -164,7 +162,7 @@ public class PostgresRepositoryImpl<ID, Entity extends BaseEntity<ID>> implement
                             statement.setString(2, b.getAuthor());
                             statement.setString(3, b.getPublisher());
                             statement.setInt(4, b.getYear());
-                            statement.setFloat(5, b.getPrice());
+                            statement.setDouble(5, b.getPrice());
 
                             statement.setString(6,b.getTitle());
                             statement.setString(7,b.getAuthor());
@@ -266,7 +264,7 @@ public class PostgresRepositoryImpl<ID, Entity extends BaseEntity<ID>> implement
                     preparedStatement.setString(2,b.getAuthor());
                     preparedStatement.setString(3,b.getPublisher());
                     preparedStatement.setInt(4,b.getYear());
-                    preparedStatement.setFloat(5,b.getPrice());
+                    preparedStatement.setDouble(5,b.getPrice());
                     preparedStatement.setInt(6,b.getId());
                 }
                 default -> throw new RepositoryException("Unknown entity type" + entity);
