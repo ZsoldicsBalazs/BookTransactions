@@ -182,7 +182,7 @@ public class PostgresRepositoryImpl<ID, Entity extends BaseEntity<ID>> implement
                             PreparedStatement statement = saveConnection.prepareStatement("INSERT INTO transaction VALUES (?,?,?)");
                             statement.setInt(1, t.getSoldBookId());
                             statement.setInt(2, t.getClientId());
-                            statement.setDouble(3, t.getTotalAmount());
+
                             statement.executeUpdate();
                             logger.info("Transaction, with ID{} saved successfully");
                             return Optional.empty();

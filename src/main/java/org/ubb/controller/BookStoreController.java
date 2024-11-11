@@ -69,6 +69,10 @@ public class BookStoreController {
                     break;
                 case ViewMenuItems.FILTER_CLIENTS_AGE:
                     view.FilterClients(clientService.filterClientByAge(view.readClientAge(), view.readClientAge()));
+                    break;
+                case ViewMenuItems.TRANSACTION_BY_CLIENT_ID:
+                    int clientID = view.readClientId();
+                    view.findTransactionByClient(transactionService.findTransactionByClient(clientService.getClient(clientID)));
             }
         } catch (BookStoreException | InputMismatchException | NullPointerException bookStoreException) {
             view.showException(bookStoreException.getMessage(), bookStoreException.getStackTrace());

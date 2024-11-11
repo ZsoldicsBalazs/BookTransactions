@@ -6,7 +6,7 @@ public class TranasactionValidatorImpl implements Validator<Transaction> {
     @Override
     public void validate(Transaction transaction) throws ValidatorException {
         isClientIdValid(transaction);
-        isTotalAmountValid(transaction);
+//        isTotalAmountValid(transaction);
         isSoldBooksIdsValid(transaction);
     }
 
@@ -16,11 +16,11 @@ public class TranasactionValidatorImpl implements Validator<Transaction> {
         }
     }
 
-    private void isTotalAmountValid(Transaction transaction) {
-        if (transaction.getTotalAmount() <= 0) {
-            throw new ValidatorException("The total amount is invalid");
-        }
-    }
+//    private void isTotalAmountValid(Transaction transaction) {
+//        if (transaction.getTotalAmount() <= 0) {
+//            throw new ValidatorException("The total amount is invalid");
+//        }
+//    }
 
     private void isSoldBooksIdsValid(Transaction transaction) {
         if (transaction.getSoldBookId() == null) {

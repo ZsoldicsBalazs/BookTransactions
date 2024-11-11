@@ -8,7 +8,6 @@ public class Transaction extends BaseEntity<Integer>{
     private LocalDateTime transactionDate;
     private Integer soldBookId; // TODO: convert to list
     private Integer clientId;
-    private Double totalAmount;
 
     public Transaction(int id, LocalDateTime transactionDate, Integer books, Integer clientId) {
         this.transactionDate = transactionDate;
@@ -44,13 +43,6 @@ public class Transaction extends BaseEntity<Integer>{
         this.transactionDate = transactionDate;
     }
 
-    public void setTotalAmount(Double totalAmount) {
-        this.totalAmount = totalAmount;
-    }
-
-    public double getTotalAmount() {
-        return totalAmount;
-    }
 
 
     @Override
@@ -60,7 +52,6 @@ public class Transaction extends BaseEntity<Integer>{
                 ", transactionDate=" + transactionDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm")) +
                 ", soldBooks=" + soldBookId +
                 ", client=" + clientId +
-                ", totalAmount=" + totalAmount +
                 '}';
     }
 }

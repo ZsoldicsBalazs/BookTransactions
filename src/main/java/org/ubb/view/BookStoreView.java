@@ -114,7 +114,7 @@ public class BookStoreView {
 
     public void showTransactions(List<Transaction> transactionList) {
         transactionList.stream()
-                .map(transaction -> transactionList.toString())
+//                .map(transaction -> transactionList.toString())
                 .forEach(System.out::println);
     }
 
@@ -130,6 +130,12 @@ public class BookStoreView {
 
         clientList.forEach(client -> System.out.println(client.toString()));
     }
+
+    public void findTransactionByClient(List<Transaction> transactionList) {
+        transactionList.forEach(transaction -> System.out.println(transaction.toString()));
+    }
+
+
 
 
 }
