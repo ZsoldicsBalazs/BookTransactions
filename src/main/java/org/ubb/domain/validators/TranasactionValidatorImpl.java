@@ -23,7 +23,7 @@ public class TranasactionValidatorImpl implements Validator<Transaction> {
     }
 
     private void isSoldBooksIdsValid(Transaction transaction) {
-        if (transaction.getSoldBooksIds() == null) {
+        if (transaction.getSoldBookId() == null) {
             throw new ValidatorException("Sold books list is empty");
         }
     }

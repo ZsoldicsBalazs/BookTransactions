@@ -180,7 +180,7 @@ public class PostgresRepositoryImpl<ID, Entity extends BaseEntity<ID>> implement
                         }
                         case Transaction t -> {
                             PreparedStatement statement = saveConnection.prepareStatement("INSERT INTO transaction VALUES (?,?,?)");
-                            statement.setInt(1, t.getSoldBooksIds());
+                            statement.setInt(1, t.getSoldBookId());
                             statement.setInt(2, t.getClientId());
                             statement.setDouble(3, t.getTotalAmount());
                             statement.executeUpdate();
@@ -246,7 +246,7 @@ public class PostgresRepositoryImpl<ID, Entity extends BaseEntity<ID>> implement
             switch (entity) {
                 case Client c -> {
                     String sql = "UPDATE " + entityClass.getSimpleName() +
-                            " SET firstname = ? lastname = ? age = ? adress = ? email = ? WHERE id = ?";
+                            " SET firstname = ?, lastname = ?, age = ?, address = ?, email = ? WHERE id = ?";
                     PreparedStatement preparedStatement = connection.prepareStatement(sql);
                     preparedStatement.setString(1,c.getFirstName());
                     preparedStatement.setString(2,c.getLastName());
@@ -254,11 +254,11 @@ public class PostgresRepositoryImpl<ID, Entity extends BaseEntity<ID>> implement
                     preparedStatement.setString(4,c.getAddress());
                     preparedStatement.setString(5,c.getEmail());
                     preparedStatement.setInt(6,c.getId());
-
+                    preparedStatement.executeUpdate();
                 }
                 case Book b -> {
                     String sql = "UPDATE " + entityClass.getSimpleName() +
-                            " SET title = ? author = ? publisher = ? year = ? price = ? WHERE id = ?";
+                            " SET title = ?, author = ?, publisher = ?, year = ?, price = ? WHERE id = ?";
                     PreparedStatement preparedStatement = connection.prepareStatement(sql);
                     preparedStatement.setString(1,b.getTitle());
                     preparedStatement.setString(2,b.getAuthor());
@@ -266,14 +266,14 @@ public class PostgresRepositoryImpl<ID, Entity extends BaseEntity<ID>> implement
                     preparedStatement.setInt(4,b.getYear());
                     preparedStatement.setDouble(5,b.getPrice());
                     preparedStatement.setInt(6,b.getId());
+                    preparedStatement.executeUpdate();
                 }
                 default -> throw new RepositoryException("Unknown entity type" + entity);
             }
         }
         catch (SQLException e){
-
+            throw new RepositoryException(e.getMessage(), e);
         }
-
 
         return Optional.empty();
     }

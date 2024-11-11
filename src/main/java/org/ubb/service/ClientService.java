@@ -1,6 +1,7 @@
 package org.ubb.service;
 
 import org.ubb.domain.Client;
+import org.ubb.domain.validators.BookStoreException;
 import org.ubb.domain.validators.ResourceNotFound;
 import org.ubb.repository.Repository;
 
@@ -11,51 +12,45 @@ import java.util.stream.StreamSupport;
 
 public class ClientService {
 
-    private final Repository<Integer, Client> clientBookStoreRepository;
+    private final Repository<Integer, Client> clientRepository;
 
 
-    public ClientService(Repository<Integer, Client> clientBookStoreRepository) {
-        this.clientBookStoreRepository = clientBookStoreRepository;
+    public ClientService(Repository<Integer, Client> clientRepository) {
+        this.clientRepository = clientRepository;
     }
 
-    public Client addClient(Client client) {
-
-        Optional<Client> returnedClient = clientBookStoreRepository.save(client);
-        return returnedClient.orElse(client);
+    public void addClient(Client clientToSave) {
+        Optional<Client> client = clientRepository.save(clientToSave);
+        if (client.isPresent()) {
+            throw new BookStoreException("Client wasn't saved");
+        }
 
     }
 
     public Client getClient(int id) {
-        return clientBookStoreRepository
+        return clientRepository
                 .findOne(id)
                 .orElseThrow(() -> new ResourceNotFound("Client with id " + id + " not found"));
     }
 
     public List<Client> getAll() {
-        return StreamSupport.stream(clientBookStoreRepository.findAll().spliterator(), false)
+        return StreamSupport.stream(clientRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());
     }
 
     public void updateClient(Client newClientRequest) {
-        int existingClientsId = newClientRequest.getId();
-        clientBookStoreRepository
-                .findOne(existingClientsId)
-                .map(client -> {
-                    client.setFirstName(newClientRequest.getFirstName());
-                    client.setLastName(newClientRequest.getLastName());
-                    client.setEmail(newClientRequest.getEmail());
-                    client.setAge(newClientRequest.getAge());
-                    client.setAddress(newClientRequest.getAddress());
-
-                    clientBookStoreRepository.update(client);
-                    return client;
-                }).orElseThrow(() -> new ResourceNotFound("Client with id " + existingClientsId  + " not found"));
+        if(clientRepository.update(newClientRequest).isPresent()) {
+            throw new ResourceNotFound("Client with id " + newClientRequest.getId() + " isn't updated");
+        }
     }
 
     public void deleteClient(int id) {
-        clientBookStoreRepository
-                .delete(id).orElseThrow(() -> new ResourceNotFound("Client with id " + id + " not found, cannot be deleted"));
+        clientRepository
+                .delete(id)
+                .orElseThrow(() -> new ResourceNotFound("Client with id " + id + " not found, cannot be deleted"));
     }
+
+
 
     public List<Client> filterClientByAge(int fromAge, int toAge){
         List<Client> allClients = getAll();
