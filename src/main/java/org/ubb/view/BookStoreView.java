@@ -6,6 +6,7 @@ import org.ubb.domain.Book;
 import org.ubb.domain.Client;
 import org.ubb.domain.Transaction;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class BookStoreView {
@@ -30,7 +31,27 @@ public class BookStoreView {
 
 
     public Transaction readTransaction() {
-        return null;
+        Transaction trans = null;
+        boolean validInput = false;
+
+        while (!validInput) {
+            try {
+                System.out.println("Enter book id");
+                int bookId = scanner.nextInt();
+                System.out.println("Enter Client id:");
+                int clientId = scanner.nextInt();
+                System.out.println("Enter transaction id:");
+                int transactionId = scanner.nextInt();
+                LocalDateTime datetime = LocalDateTime.now();
+                validInput = true;
+                trans = new Transaction(transactionId,datetime,bookId,clientId);
+            }catch (InputMismatchException e) {
+                System.out.println("Please enter a valid number.");
+
+            }
+        }
+        logger.info("Transaction read successful");
+        return trans;
     }
 
     public void showTransaction(Transaction transaction) {

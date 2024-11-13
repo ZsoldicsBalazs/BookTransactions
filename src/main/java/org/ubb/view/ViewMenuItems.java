@@ -17,7 +17,8 @@ public enum ViewMenuItems {
     EXIT("Exit", 12),
     FILTER_CLIENTS_AGE("Filter clients between ages",13),
     REPORTS("Reporting", 14),
-    TRANSACTION_BY_CLIENT_ID("Filter transactions by client id",15);
+    TRANSACTION_BY_CLIENT_ID("Filter transactions by client id",15),
+    ADD_TRANSACTION("Add a new transaction", 16);
 
     private final String label;
     private final int id;

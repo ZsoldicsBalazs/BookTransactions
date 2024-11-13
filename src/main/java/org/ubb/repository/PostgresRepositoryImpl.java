@@ -13,10 +13,8 @@ import org.ubb.domain.validators.ValidatorException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -179,13 +177,29 @@ public class PostgresRepositoryImpl<ID, Entity extends BaseEntity<ID>> implement
 
                         }
                         case Transaction t -> {
-                            PreparedStatement statement = saveConnection.prepareStatement("INSERT INTO transaction VALUES (?,?,?)");
+                            PreparedStatement statement = saveConnection.prepareStatement(
+                                    "INSERT INTO transaction(soldbookid,clientid,transactiondate) SELECT ?,?,? " +
+                                    "WHERE NOT EXISTS (SELECT 1 FROM transaction WHERE clientid = ? AND transactiondate = ?)");
+
+//                            Timestamp timestamp = Timestamp.valueOf(t.getTransactionDate());
                             statement.setInt(1, t.getSoldBookId());
                             statement.setInt(2, t.getClientId());
+                            statement.setTimestamp(3,Timestamp.valueOf(t.getTransactionDate()));
 
-                            statement.executeUpdate();
-                            logger.info("Transaction, with ID{} saved successfully");
-                            return Optional.empty();
+                            //
+                            statement.setInt(4,t.getClientId());
+                            statement.setTimestamp(5,Timestamp.valueOf(t.getTransactionDate()));
+
+
+                            int rowsAffected = statement.executeUpdate();
+                            if (rowsAffected > 0) {
+                                logger.info("Transaction, with ID{} saved successfully",t.getId());
+                                return Optional.empty();
+                            }
+                            else {
+                                logger.info("Transaction, with ID{} was not saved, already exists",t.getId());
+                                return Optional.of(entity);
+                            }
                         }
 
 
@@ -268,7 +282,9 @@ public class PostgresRepositoryImpl<ID, Entity extends BaseEntity<ID>> implement
                     preparedStatement.setInt(6,b.getId());
                     preparedStatement.executeUpdate();
                 }
+
                 default -> throw new RepositoryException("Unknown entity type" + entity);
+
             }
         }
         catch (SQLException e){

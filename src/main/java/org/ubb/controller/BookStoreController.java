@@ -73,6 +73,10 @@ public class BookStoreController {
                 case ViewMenuItems.TRANSACTION_BY_CLIENT_ID:
                     int clientID = view.readClientId();
                     view.findTransactionByClient(transactionService.findTransactionByClient(clientService.getClient(clientID)));
+                case ViewMenuItems.ADD_TRANSACTION:
+                    Transaction trans = view.readTransaction();
+                    transactionService.createTransaction(trans);
+                    break;
             }
         } catch (BookStoreException | InputMismatchException | NullPointerException bookStoreException) {
             view.showException(bookStoreException.getMessage(), bookStoreException.getStackTrace());
