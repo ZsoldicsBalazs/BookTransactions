@@ -1,7 +1,7 @@
 package org.ubb.domain.validators;
 
 
-public class ValidatorException extends CatalogException {
+public class ValidatorException extends BookStoreException {
     public ValidatorException(String message) {
         super(message);
     }

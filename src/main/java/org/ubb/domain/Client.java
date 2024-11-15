@@ -1,25 +1,25 @@
 package org.ubb.domain;
 
-import java.util.ArrayList;
-import java.util.List;
+public class Client extends BaseEntity<Integer> {
 
-public class Client extends BaseEntity {
 
     private String firstName;
     private String lastName;
-    private int age;
+    private Integer age;
     private String address;
     private String email;
-    private List<Book> books;
 
-    public Client(int id, String firstName, String lastName, int age, String address, String email) {
-        super(id);
+
+    public Client(int id, String firstName, String lastName, Integer age, String address, String email) {
+        super.setId(id);
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
         this.address = address;
         this.email = email;
-        this.books = new ArrayList<Book>();
+    }
+
+    public Client() {
     }
 
     public String getFirstName() {
@@ -42,7 +42,7 @@ public class Client extends BaseEntity {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
@@ -62,17 +62,7 @@ public class Client extends BaseEntity {
         this.email = email;
     }
 
-    public List<Book> getBooks() {
-        return books;
-    }
 
-    public void buyBook(Book book) {
-        books.add(book);
-//        book.incrementareVanzari();       TODO: de implementat metoda la book, sa se vada cate s-au vandut
-    }
-    public int getTotalBooks(){
-        return books.size();
-    }
 
     @Override
     public String toString() {
@@ -82,7 +72,6 @@ public class Client extends BaseEntity {
                 ", age=" + age +
                 ", address='" + address + '\'' +
                 ", email='" + email + '\'' +
-                ", books=" + books +
                 '}';
     }
 }

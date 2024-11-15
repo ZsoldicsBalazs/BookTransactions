@@ -1,57 +1,57 @@
 package org.ubb.domain;
 
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-public class Transaction extends BaseEntity{
+public class Transaction extends BaseEntity<Integer>{
 
-    private int id;
-    private static AtomicInteger uniqueId = new AtomicInteger();
-    private List<Book> soldBooks;
-    private Client client;
-    private double totalAmount;
+    private LocalDateTime transactionDate;
+    private Integer soldBookId; // TODO: convert to list
+    private Integer clientId;
 
-    public Transaction(List<Book> books, Client client) {
-        id = uniqueId.getAndIncrement();
-        soldBooks = books;
-        this.client = client;
-        calculateTotalAmount();
+    public Transaction(int id, LocalDateTime transactionDate, Integer books, Integer clientId) {
+        this.transactionDate = transactionDate;
+        super.setId(id);
+        soldBookId = books;
+        this.clientId = clientId;
     }
 
-    public void calculateTotalAmount() {
-        this.totalAmount = soldBooks.stream()
-                .map(Book::getPrice)
-                .reduce((double) 0, Double::sum);
+    public Transaction() {}
+
+
+    public Integer getSoldBookId() {
+        return soldBookId;
     }
 
-    public List<Book> getSoldBooks() {
-        return soldBooks;
+    public void setSoldBookId(Integer soldBooksIds) {
+        this.soldBookId = soldBooksIds;
     }
 
-    public void setSoldBooks(List<Book> soldBooks) {
-        this.soldBooks = soldBooks;
+    public Integer getClientId() {
+        return clientId;
     }
 
-    public Client getClient() {
-        return client;
+    public void setClientId(Integer clientId) {
+        this.clientId = clientId;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public LocalDateTime getTransactionDate() {
+        return transactionDate;
     }
 
-    public double getTotalAmount() {
-        return totalAmount;
+    public void setTransactionDate(LocalDateTime transactionDate) {
+        this.transactionDate = transactionDate;
     }
+
 
 
     @Override
     public String toString() {
         return "Transaction{" +
-                "id=" + id +
-                ", soldBooks=" + soldBooks +
-                ", client=" + client +
-                ", totalAmount=" + totalAmount +
+                "id=" + super.getId() +
+                ", transactionDate=" + transactionDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy hh:mm")) +
+                ", soldBooks=" + soldBookId +
+                ", client=" + clientId +
                 '}';
     }
 }

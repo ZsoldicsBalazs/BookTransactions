@@ -1,28 +1,22 @@
 package org.ubb.domain;
 
-import java.util.List;
+public class Book extends BaseEntity<Integer> {
+    private String title;
+    private String author;
+    private String  publisher;
+    private Integer year;
+    private Double price;
 
-public class Book extends BaseEntity {
-   private String title;
-   private List<String> author;
-
-
-  // private String author;
-   private String  publisher;
-   private int year;
-   private double price;
-
-
-   private List<Book> books;
-
-    public Book( int id, String title, List<String> author, String publisher, int year, float price) {
-        super(id);
+    public Book(int id,String title, String author, String publisher, Integer year, Double price) {
+        super.setId(id);
         this.title = title;
         this.author = author;
         this.publisher = publisher;
         this.year = year;
         this.price = price;
     }
+
+    public Book() {}
 
     public String getTitle() {
         return title;
@@ -32,11 +26,11 @@ public class Book extends BaseEntity {
         this.title = title;
     }
 
-    public List<String> getAuthor() {
+    public String getAuthor() {
         return author;
     }
 
-    public void setAuthor(List<String> author) {
+    public void setAuthor(String author) {
         this.author = author;
     }
 
@@ -52,25 +46,18 @@ public class Book extends BaseEntity {
         return year;
     }
 
-    public void setYear(int year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
-    public List<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(List<Book> books) {
-        this.books = books;
-    }
 
     @Override
     public String toString() {
@@ -81,7 +68,7 @@ public class Book extends BaseEntity {
                 ", publisher='" + publisher + '\'' +
                 ", year=" + year +
                 ", price=" + price +
-                ", books=" + books +
                 '}';
     }
+
 }

@@ -1,0 +1,10 @@
+1234;balazs2;janos2;84;alucajfaf;afa@gmail.com
+98;test;test;99;clujnapocatest;cluj@gmail.com
+123;Ion;Tiriac;78;Craiova;tiriac@gmial.com
+987;Ors;Csiszer;103;clujnapocaaaa;cs.ors@gmail.com
+332;balazs;zsoldics;99;clujnapoca;zlaku@gmail.com
+123;Ion;Tiriac;78;Craiova;tiriac@gmial.com
+332;Balazs;Zsoldics;32;adadsds;balazs@gmail.com
+445;Ana;Iancu;33;45435fggdf;ana@gmail.com
+76654;Ion;Vlaicu;54;asdfasff;ion@gmail.com;
+77777;Alina;Bogdan;44;Sinaia;alina@gmail.com
