@@ -190,7 +190,6 @@ public class PostgresRepositoryImpl<ID, Entity extends BaseEntity<ID>> implement
                             statement.setInt(4,t.getClientId());
                             statement.setTimestamp(5,Timestamp.valueOf(t.getTransactionDate()));
 
-
                             int rowsAffected = statement.executeUpdate();
                             if (rowsAffected > 0) {
                                 logger.info("Transaction, with ID{} saved successfully",t.getId());
