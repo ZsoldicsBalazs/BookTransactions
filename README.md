@@ -1,5 +1,5 @@
 # Library Management System
-This project is a Library Management System that manages clients, books, and transactions. It is implemented using the Controller Service Repository architecture , with options for multiple storage methods, including file, XML, in-memory, and SQL database.
+This project is a Library Management System that manages clients, books, and transactions. It is implemented using the Controller Service Repository pattern , with options for multiple storage methods, including file, XML, in-memory, and SQL database.
 
 Table of Contents:
       Overview
@@ -28,7 +28,7 @@ XML: For alternative data storage.
 JUnit: For unit testing.
 
 ### Project Structure
-The project follows the MVC structure with the Repository pattern for data access. Here’s a breakdown of the main components:
+The project follows the Controller Service Repository structure. Here’s a breakdown of the main components:
 
 Model: Contains entity classes (Client, Book, Transaction) that represent the data structure.
 
@@ -49,7 +49,7 @@ SQL Database: For persistent storage in a SQL database with HikariCP for efficie
 
 ### Key Design Patterns
 
-MVC Pattern: Separates application logic, user interface, and data to allow easy maintenance and scalability.
+Controller Service Repository Pattern: Separates application logic, user interface, and data to allow easy maintenance and scalability.
 
 Repository Pattern: Provides a flexible data access layer, enabling multiple storage options.
 
