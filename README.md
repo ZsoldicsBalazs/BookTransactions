@@ -1,5 +1,5 @@
 # Library Management System
-This project is a Library Management System that manages clients, books, and transactions. It is implemented using the MVC (Model-View-Controller) architecture and the Repository pattern, with options for multiple storage methods, including file, XML, in-memory, and SQL database.
+This project is a Library Management System that manages clients, books, and transactions. It is implemented using the Controller Service Repository architecture , with options for multiple storage methods, including file, XML, in-memory, and SQL database.
 
 Table of Contents:
       Overview
